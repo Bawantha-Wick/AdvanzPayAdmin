@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Card, CardContent, Typography, Paper, Popover } from '@mui/material';
-import { ArrowUpward, Inventory, Payments, People, AccountBalanceWallet } from '@mui/icons-material';
+import { ArrowUpward, Business, People, RequestQuote, AccountBalance } from '@mui/icons-material';
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -80,36 +80,24 @@ const Dashboard: React.FC = () => {
 
   const open = Boolean(anchorEl);
 
-  // Chart data to match the screenshot
+  // Chart data for loan amount over time
   const chartData = [
-    { month: 'Jan', amount: 15, year: '2022' },
-    { month: 'Feb', amount: 70, year: '2022' },
-    { month: 'Mar', amount: 150, year: '2022' },
-    { month: 'Apr', amount: 100, year: '2022' },
-    { month: 'May', amount: 180, year: '2022' },
-    { month: 'Jun', amount: 120, year: '2022' },
-    { month: 'Jul', amount: 160, year: '2022' },
-    { month: 'Aug', amount: 350, year: '2022' }, // Peak value
-    { month: 'Sep', amount: 100, year: '2022' },
-    { month: 'Oct', amount: 180, year: '2022' },
-    { month: 'Nov', amount: 140, year: '2022' },
-    { month: 'Dec', amount: 210, year: '2022' },
-    { month: 'Jan', amount: 50, year: '2022' },
-    { month: 'Feb', amount: 90, year: '2022' },
-    { month: 'Mar', amount: 170, year: '2022' },
-    { month: 'Apr', amount: 270, year: '2022' },
-    { month: 'May', amount: 220, year: '2022' },
-    { month: 'Jun', amount: 240, year: '2022' },
-    { month: 'Jul', amount: 190, year: '2022' },
-    { month: 'Aug', amount: 180, year: '2022' },
-    { month: 'Sep', amount: 130, year: '2022' },
-    { month: 'Oct', amount: 200, year: '2022' },
-    { month: 'Nov', amount: 180, year: '2022' },
-    { month: 'Dec', amount: 190, year: '2022' }
+    { period: 'Jan', amount: 20 },
+    { period: 'Feb', amount: 30 },
+    { period: 'Mar', amount: 45 },
+    { period: 'Apr', amount: 35 },
+    { period: 'May', amount: 60 },
+    { period: 'Jun', amount: 70 },
+    { period: 'Jul', amount: 55 },
+    { period: 'Aug', amount: 85 },
+    { period: 'Sep', amount: 75 },
+    { period: 'Oct', amount: 90 },
+    { period: 'Nov', amount: 80 },
+    { period: 'Dec', amount: 95 }
   ];
 
   return (
-    <Box sx={{ p: 3, bgcolor: '#faf7f2' }}>
+    <Box sx={{ p: 3, bgcolor: '#f8f9fa', minHeight: '100vh' }}>
       {/* Date Range Display */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Box /> {/* Empty box for alignment to match Reports.tsx layout */}
@@ -303,205 +291,202 @@ const Dashboard: React.FC = () => {
 
       {/* Stat Cards */}
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, mb: 4 }}>
-        {/* Advance Requests Card */}
-        <Box sx={{ flex: '1 1 calc(25% - 24px)', minWidth: '8rem' }}>
-          <Card sx={{ bgcolor: '#e8d7cd', borderRadius: '40px', position: 'relative', height: '11.5rem' }}>
-            <CardContent>
-              <Typography variant="subtitle1" sx={{ color: '#666' }}>
-                Advance requests
-              </Typography>
-              <Typography variant="h3" sx={{ my: 2, fontWeight: 'bold' }}>
+        {/* Corporate Card */}
+        <Box sx={{ flex: '1 1 calc(25% - 24px)', minWidth: '200px' }}>
+          <Card sx={{ bgcolor: '#fff3e0', borderRadius: '20px', position: 'relative', height: '120px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+            <CardContent sx={{ p: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <Box
+                  sx={{
+                    bgcolor: '#ffb74d',
+                    p: 1,
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mr: 1.5
+                  }}
+                >
+                  <Business sx={{ color: '#fff', fontSize: 20 }} />
+                </Box>
+                <Typography variant="body2" sx={{ color: '#666', fontWeight: 500 }}>
+                  Corporate
+                </Typography>
+              </Box>
+              <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#333', mb: 1 }}>
                 40
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <ArrowUpward sx={{ color: '#4CAF50', fontSize: 16, mr: 0.5 }} />
+                <ArrowUpward sx={{ color: '#4CAF50', fontSize: 14, mr: 0.5 }} />
                 <Typography variant="caption" sx={{ color: '#666' }}>
                   From today data
                 </Typography>
-              </Box>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: '3rem',
-                  right: 20,
-                  transform: 'translateY(-50%)',
-                  bgcolor: '#fadad7',
-                  p: 1.5,
-                  borderRadius: '18px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <Inventory sx={{ color: '#ff6b6b', fontSize: 24 }} />
-              </Box>
-            </CardContent>
-          </Card>
-        </Box>
-
-        {/* Total Advance Amount Card */}
-        <Box sx={{ flex: '1 1 calc(25% - 24px)', minWidth: '8rem' }}>
-          <Card sx={{ bgcolor: '#fff', borderRadius: '40px', position: 'relative', height: '11.5rem' }}>
-            <CardContent>
-              <Typography variant="subtitle1" sx={{ color: '#666' }}>
-                Total Advance amount
-              </Typography>
-              <Typography variant="h3" sx={{ my: 2, fontWeight: 'bold' }}>
-                1000 USD
-              </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <ArrowUpward sx={{ color: '#4CAF50', fontSize: 16, mr: 0.5 }} />
-                <Typography variant="caption" sx={{ color: '#666' }}>
-                  From today data
-                </Typography>
-              </Box>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: '3rem',
-                  right: 20,
-                  transform: 'translateY(-50%)',
-                  bgcolor: '#e8eeff',
-                  p: 1.5,
-                  borderRadius: '18px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <Payments sx={{ color: '#536DFE', fontSize: 24 }} />
               </Box>
             </CardContent>
           </Card>
         </Box>
 
         {/* Employees Card */}
-        <Box sx={{ flex: '1 1 calc(25% - 24px)', minWidth: '8rem' }}>
-          <Card sx={{ bgcolor: '#e8d7cd', borderRadius: '40px', position: 'relative', height: '11.5rem' }}>
-            <CardContent>
-              <Typography variant="subtitle1" sx={{ color: '#666' }}>
-                Employees
-              </Typography>
-              <Typography variant="h3" sx={{ my: 2, fontWeight: 'bold' }}>
-                40
+        <Box sx={{ flex: '1 1 calc(25% - 24px)', minWidth: '200px' }}>
+          <Card sx={{ bgcolor: '#e8f5e8', borderRadius: '20px', position: 'relative', height: '120px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+            <CardContent sx={{ p: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <Box
+                  sx={{
+                    bgcolor: '#66bb6a',
+                    p: 1,
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mr: 1.5
+                  }}
+                >
+                  <People sx={{ color: '#fff', fontSize: 20 }} />
+                </Box>
+                <Typography variant="body2" sx={{ color: '#666', fontWeight: 500 }}>
+                  Employees
+                </Typography>
+              </Box>
+              <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#333', mb: 1 }}>
+                09
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <ArrowUpward sx={{ color: '#4CAF50', fontSize: 16, mr: 0.5 }} />
+                <ArrowUpward sx={{ color: '#4CAF50', fontSize: 14, mr: 0.5 }} />
                 <Typography variant="caption" sx={{ color: '#666' }}>
                   From today data
                 </Typography>
-              </Box>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: '3rem',
-                  right: 20,
-                  transform: 'translateY(-50%)',
-                  bgcolor: '#fadad7',
-                  p: 1.5,
-                  borderRadius: '18px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <People sx={{ color: '#ff6b6b', fontSize: 24 }} />
               </Box>
             </CardContent>
           </Card>
         </Box>
 
-        {/* Liability Card */}
-        <Box sx={{ flex: '1 1 calc(25% - 24px)', minWidth: '8rem' }}>
-          <Card sx={{ bgcolor: '#fff', borderRadius: '40px', position: 'relative', height: '11.5rem' }}>
-            <CardContent>
-              <Typography variant="subtitle1" sx={{ color: '#666' }}>
-                Liability
-              </Typography>
-              <Typography variant="h3" sx={{ my: 2, fontWeight: 'bold' }}>
-                0
+        {/* Loan Requests Card */}
+        <Box sx={{ flex: '1 1 calc(25% - 24px)', minWidth: '200px' }}>
+          <Card sx={{ bgcolor: '#fff8e1', borderRadius: '20px', position: 'relative', height: '120px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+            <CardContent sx={{ p: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <Box
+                  sx={{
+                    bgcolor: '#ffa726',
+                    p: 1,
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mr: 1.5
+                  }}
+                >
+                  <RequestQuote sx={{ color: '#fff', fontSize: 20 }} />
+                </Box>
+                <Typography variant="body2" sx={{ color: '#666', fontWeight: 500 }}>
+                  Loan requests
+                </Typography>
+              </Box>
+              <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#333', mb: 1 }}>
+                40
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <ArrowUpward sx={{ color: '#4CAF50', fontSize: 16, mr: 0.5 }} />
+                <ArrowUpward sx={{ color: '#4CAF50', fontSize: 14, mr: 0.5 }} />
                 <Typography variant="caption" sx={{ color: '#666' }}>
                   From today data
                 </Typography>
               </Box>
-              <Box
-                sx={{
-                  position: 'absolute',
-                  top: '3rem',
-                  right: 20,
-                  transform: 'translateY(-50%)',
-                  bgcolor: '#e8eeff',
-                  p: 1.5,
-                  borderRadius: '18px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <AccountBalanceWallet sx={{ color: '#536DFE', fontSize: 24 }} />
+            </CardContent>
+          </Card>
+        </Box>
+
+        {/* Total Loans Card */}
+        <Box sx={{ flex: '1 1 calc(25% - 24px)', minWidth: '200px' }}>
+          <Card sx={{ bgcolor: '#f3e5f5', borderRadius: '20px', position: 'relative', height: '120px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
+            <CardContent sx={{ p: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <Box
+                  sx={{
+                    bgcolor: '#8e24aa',
+                    p: 1,
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mr: 1.5
+                  }}
+                >
+                  <AccountBalance sx={{ color: '#fff', fontSize: 20 }} />
+                </Box>
+                <Typography variant="body2" sx={{ color: '#666', fontWeight: 500 }}>
+                  Total loans
+                </Typography>
               </Box>
+              <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#333', mb: 1 }}>
+                0
+              </Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Typography variant="caption" sx={{ color: '#666', fontWeight: 500 }}>
+                  Commission gained
+                </Typography>
+              </Box>
+              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333', mt: 0.5 }}>
+                0
+              </Typography>
             </CardContent>
           </Card>
         </Box>
       </Box>
 
-      {/* Chart Section */}
-      <Paper sx={{ p: 3, borderRadius: '40px', mb: 4 }}>
-        <Typography variant="h6" sx={{ mb: 2 }}>
-          Advance amount over time
-        </Typography>
-        <Box sx={{ height: 300, position: 'relative' }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
-              <defs>
-                <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ff6b6b" stopOpacity={0.2} />
-                  <stop offset="50%" stopColor="#ffc29d" stopOpacity={0.15} />
-                  <stop offset="95%" stopColor="#fff8f0" stopOpacity={0.1} />
-                </linearGradient>
-              </defs>
-              <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e0e0e0" />
-              <XAxis dataKey="year" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: '#888' }} tickMargin={10} interval={0} />
-              <YAxis axisLine={false} tickLine={false} domain={[0, 400]} ticks={[0, 100, 200, 300, 400]} tickFormatter={(value) => (value === 0 ? '0' : `${value}USD`)} tick={{ fontSize: 10, fill: '#888' }} />
-              <Tooltip
-                formatter={(value) => [`${value} USD`]}
-                labelFormatter={() => ''}
-                contentStyle={{
-                  backgroundColor: '#ff4d4d',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: 4,
-                  fontSize: 12,
-                  padding: '2px 8px'
-                }}
-                itemStyle={{ color: 'white' }}
-                labelStyle={{ color: 'white' }}
-              />
-              <Area type="monotone" dataKey="amount" stroke="none" fill="url(#colorAmount)" />
-              <Line type="monotone" dataKey="amount" stroke="#ff6b6b" strokeWidth={2} dot={{ r: 3, fill: '#ff6b6b', strokeWidth: 0 }} activeDot={{ r: 5, fill: '#ff6b6b', strokeWidth: 0 }} />
-
-              {/* Custom peak value label */}
-              <text
-                x="28%"
-                y="105"
-                textAnchor="middle"
-                fill="white"
-                style={{
-                  fontSize: '12px',
-                  fontWeight: 'normal'
-                }}
-              >
-                <tspan x="28%" dy="0" dx="5">
-                  350 USD
-                </tspan>
-              </text>
-            </LineChart>
-          </ResponsiveContainer>
+      {/* Bottom Section */}
+      <Box sx={{ display: 'flex', gap: 3 }}>
+        {/* Top Corporates Section */}
+        <Box sx={{ flex: '1 1 30%', minWidth: '300px' }}>
+          <Paper sx={{ p: 3, borderRadius: '20px', height: '400px' }}>
+            <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: '#333' }}>
+              Top Corporates
+            </Typography>
+            <Box sx={{ height: 'calc(100% - 60px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Typography variant="body2" sx={{ color: '#999', textAlign: 'center' }}>
+                No data available
+              </Typography>
+            </Box>
+          </Paper>
         </Box>
-      </Paper>
+
+        {/* Chart Section */}
+        <Box sx={{ flex: '1 1 70%', minWidth: '400px' }}>
+          <Paper sx={{ p: 3, borderRadius: '20px', height: '400px' }}>
+            <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: '#333' }}>
+              Loan Amount Over Time
+            </Typography>
+            <Box sx={{ height: 'calc(100% - 80px)', position: 'relative' }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                  <defs>
+                    <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#ff9800" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#ff9800" stopOpacity={0.1} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+                  <XAxis dataKey="period" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: '#666' }} tickMargin={10} />
+                  <YAxis axisLine={false} tickLine={false} domain={[0, 100]} tickFormatter={(value) => `${value}k`} tick={{ fontSize: 12, fill: '#666' }} />
+                  <Tooltip
+                    formatter={(value) => [`${value}k USD`, 'Amount']}
+                    labelFormatter={(label) => `Period: ${label}`}
+                    contentStyle={{
+                      backgroundColor: '#fff',
+                      border: '1px solid #e0e0e0',
+                      borderRadius: '8px',
+                      fontSize: 12,
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                    }}
+                  />
+                  <Area type="monotone" dataKey="amount" stroke="none" fill="url(#colorAmount)" />
+                  <Line type="monotone" dataKey="amount" stroke="#ff9800" strokeWidth={3} dot={{ r: 4, fill: '#ff9800', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6, fill: '#ff9800', strokeWidth: 2, stroke: '#fff' }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </Box>
+          </Paper>
+        </Box>
+      </Box>
     </Box>
   );
 };
