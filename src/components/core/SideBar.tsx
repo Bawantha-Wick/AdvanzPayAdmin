@@ -8,7 +8,7 @@ import { RiFileListLine } from 'react-icons/ri';
 import { HiOutlineUserGroup } from 'react-icons/hi2';
 import { BiLogOut } from 'react-icons/bi';
 import innerLogo from '../../assets/inner_logo.png';
-import { LuUserRoundPlus, LuUserRoundCheck } from 'react-icons/lu';
+import { LuUserRoundPlus } from 'react-icons/lu';
 import { useAuthContext } from '../../contexts/useAuthContext';
 import ProfileIcon from '../common/ProfileIcon';
 
@@ -122,7 +122,7 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
           <button onClick={() => toggleMenu('employeeManagement')} className="w-full flex items-center justify-between text-white hover:bg-[#DC7356] transition-colors">
             <div className="flex items-center">
               <HiOutlineUserGroup className="text-xl" style={iconStyles} />
-              <span className={isActiveRoute('/app/employees') || isActiveRoute('/app/employee-requests') || isActiveRoute('/app/authorize-employees') ? 'font-bold' : ''}>Employee Management</span>
+              <span className={isActiveRoute('/app/employees') || isActiveRoute('/app/employee-requests') || isActiveRoute('/app/authorize-employees') ? 'font-bold' : ''}>Corporate Management</span>
             </div>
             {expandedMenus.includes('employeeManagement') ? <MdKeyboardArrowDown className="text-xl" style={expandIconStyles} /> : <MdKeyboardArrowRight className="text-xl" style={expandIconStyles} />}
           </button>
@@ -131,19 +131,13 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
               <Link to="/app/employees" className="flex block py-2">
                 <FaRegUser className="text-l" style={subMenuIconStyles} />
                 <span style={subMenuItemStyles} className={isActiveRoute('/app/employees') ? 'font-bold' : ''}>
-                  Employees
+                  Corporate
                 </span>
               </Link>
               <Link to="/app/employee-requests" className="flex block py-2">
                 <LuUserRoundPlus className="text-xl" style={subMenuIconStyles} />
                 <span style={subMenuItemStyles} className={isActiveRoute('/app/employee-requests') ? 'font-bold' : ''}>
-                  Employee Requests
-                </span>
-              </Link>
-              <Link to="/app/authorize-employees" className="flex block py-2">
-                <LuUserRoundCheck className="text-xl" style={subMenuIconStyles} />
-                <span style={subMenuItemStyles} className={isActiveRoute('/app/authorize-employees') ? 'font-bold' : ''}>
-                  Authorize Employees
+                  Corporate User
                 </span>
               </Link>
             </div>
