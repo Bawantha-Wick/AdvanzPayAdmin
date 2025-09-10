@@ -24,7 +24,9 @@ const SignIn: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Sign in form submitted with:', formData);
+    console.log('Development mode: Sign in bypassed, redirecting to dashboard');
+    // Bypass authentication for development - auto redirect to dashboard
+    navigate('/app/dashboard');
   };
 
   const handleForgotPassword = (e: React.MouseEvent) => {

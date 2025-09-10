@@ -1,12 +1,26 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { authService } from '../services/authService';
+import type { User } from '../types/api';
 
-// Auth queries
+// Dummy user data for development
+const getDummyUser = (): User => ({
+  id: 'dummy-user-1',
+  name: 'Admin User',
+  email: 'admin@advanzpay.com',
+  role: 'Admin',
+  isActive: true,
+  createdAt: new Date().toISOString(),
+  lastLogin: new Date().toISOString()
+});
+
+// Auth queries - commented out for development
 export const useCurrentUser = () => {
   return useQuery({
     queryKey: ['currentUser'],
-    queryFn: authService.getCurrentUser,
-    enabled: authService.isAuthenticated(),
+    queryFn: () => Promise.resolve(getDummyUser()), // Always return dummy user for development
+    // queryFn: authService.getCurrentUser, // Commented out for development
+    enabled: true, // Always enabled for development
+    // enabled: authService.isAuthenticated(), // Commented out for development
     retry: false
   });
 };

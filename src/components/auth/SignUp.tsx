@@ -66,7 +66,9 @@ const SignUp: React.FC = () => {
       return;
     }
 
-    console.log('Form submitted with valid data:', formData);
+    console.log('Development mode: Sign up bypassed, redirecting to dashboard');
+    // Bypass authentication for development - auto redirect to dashboard
+    navigate('/app/dashboard');
   };
 
   const handleSignIn = (e: React.MouseEvent) => {

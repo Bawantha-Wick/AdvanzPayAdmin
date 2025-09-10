@@ -27,11 +27,16 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
-      // Handle unauthorized access
-      localStorage.removeItem('authToken');
-      window.location.href = '/signin';
-    }
+    console.warn('API Error:', error.message);
+
+    // In development mode, we'll let individual services handle fallbacks
+    // Comment out redirect for development to prevent unwanted redirects
+    // if (error.response?.status === 401) {
+    //   // Handle unauthorized access
+    //   localStorage.removeItem('authToken');
+    //   window.location.href = '/signin';
+    // }
+
     return Promise.reject(error);
   }
 );
