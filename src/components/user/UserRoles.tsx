@@ -156,7 +156,7 @@ const UserRoles: React.FC = () => {
   };
 
   return (
-    <Box sx={{ width: '100%', bgcolor: '#fcf9f1', borderRadius: 2, p: 3 }}>
+    <Box sx={{ width: '100%', bgcolor: '#eefff3ff', borderRadius: 2, p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
         <TextField
           placeholder="Search roles"
@@ -194,9 +194,9 @@ const UserRoles: React.FC = () => {
           onClick={handleOpenAddRoleModal}
           sx={{
             borderRadius: '8px',
-            backgroundColor: '#e07a64',
+            backgroundColor: '#0d4829',
             '&:hover': {
-              backgroundColor: '#d06954'
+              backgroundColor: '#25BD6F'
             }
           }}
         >
@@ -263,17 +263,17 @@ const UserRoles: React.FC = () => {
                         startIcon={<FaRegEdit />}
                         onClick={() => handleOpenEditRoleModal(row)}
                         sx={{
-                          color: '#e07a64',
-                          borderColor: '#e07a64',
+                          color: '#0d4829',
+                          borderColor: '#0d4829',
                           borderRadius: '10px',
                           padding: '6px 16px',
                           '&:hover': {
-                            borderColor: '#d06954',
+                            borderColor: '#25BD6F',
                             backgroundColor: 'rgba(224, 122, 100, 0.04)'
                           }
                         }}
                       >
-                        View & Edit
+                        VIEW & EDIT
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -288,7 +288,7 @@ const UserRoles: React.FC = () => {
             justifyContent: 'space-between',
             alignItems: 'center',
             p: 1.5,
-            backgroundColor: '#fcf9f1',
+            backgroundColor: '#eefff3ff',
             borderBottomLeftRadius: '8px',
             borderBottomRightRadius: '8px'
           }}
@@ -313,7 +313,7 @@ const UserRoles: React.FC = () => {
                 height: '32px',
                 width: '32px',
                 padding: 0,
-                border: '1px solid #e9d9c2',
+                border: '1px solid #eefff3ff',
                 borderRadius: '4px',
                 color: '#000',
                 backgroundColor: 'transparent',
@@ -333,7 +333,7 @@ const UserRoles: React.FC = () => {
                 height: '32px',
                 width: '32px',
                 padding: 0,
-                border: '1px solid #e9d9c2',
+                border: '1px solid #eefff3ff',
                 borderRadius: '4px',
                 color: '#000',
                 backgroundColor: 'transparent',

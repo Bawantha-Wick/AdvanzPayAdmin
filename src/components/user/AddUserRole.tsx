@@ -299,8 +299,8 @@ const AddUserRoleModal: React.FC<AddUserRoleModalProps> = ({ open, onClose, onSa
                     color: 'transparent'
                   },
                   '&.Mui-checked .MuiSvgIcon-root': {
-                    color: '#f14c3c',
-                    border: '2px solid #f14c3c',
+                    color: '#00b79a',
+                    border: '2px solid #00b79a',
                     borderRadius: '4px',
                     backgroundColor: 'transparent',
                     backgroundImage: 'none'
@@ -328,8 +328,8 @@ const AddUserRoleModal: React.FC<AddUserRoleModalProps> = ({ open, onClose, onSa
                     color: 'transparent'
                   },
                   '&.Mui-checked .MuiSvgIcon-root': {
-                    color: '#f14c3c',
-                    border: '2px solid #f14c3c',
+                    color: '#00b79a',
+                    border: '2px solid #00b79a',
                     borderRadius: '4px',
                     backgroundColor: 'transparent',
                     backgroundImage: 'none'
@@ -357,8 +357,8 @@ const AddUserRoleModal: React.FC<AddUserRoleModalProps> = ({ open, onClose, onSa
                     color: 'transparent'
                   },
                   '&.Mui-checked .MuiSvgIcon-root': {
-                    color: '#f14c3c',
-                    border: '2px solid #f14c3c',
+                    color: '#00b79a',
+                    border: '2px solid #00b79a',
                     borderRadius: '4px',
                     backgroundColor: 'transparent',
                     backgroundImage: 'none'
@@ -386,8 +386,8 @@ const AddUserRoleModal: React.FC<AddUserRoleModalProps> = ({ open, onClose, onSa
                     color: 'transparent'
                   },
                   '&.Mui-checked .MuiSvgIcon-root': {
-                    color: '#f14c3c',
-                    border: '2px solid #f14c3c',
+                    color: '#00b79a',
+                    border: '2px solid #00b79a',
                     borderRadius: '4px',
                     backgroundColor: 'transparent',
                     backgroundImage: 'none'
@@ -407,9 +407,9 @@ const AddUserRoleModal: React.FC<AddUserRoleModalProps> = ({ open, onClose, onSa
                 sx={{
                   borderRadius: '8px',
                   borderColor: isRoleActive ? '#e6d1b5' : '#4caf50',
-                  color: isRoleActive ? '#e07a64' : '#4caf50',
+                  color: isRoleActive ? '#0d4829' : '#4caf50',
                   '&:hover': {
-                    borderColor: isRoleActive ? '#d06954' : '#45a049',
+                    borderColor: isRoleActive ? '#25BD6F' : '#45a049',
                     backgroundColor: isRoleActive ? 'rgba(224, 122, 100, 0.04)' : 'rgba(76, 175, 80, 0.04)'
                   }
                 }}
@@ -426,11 +426,11 @@ const AddUserRoleModal: React.FC<AddUserRoleModalProps> = ({ open, onClose, onSa
               disabled={loading}
               sx={{
                 borderRadius: '8px',
-                backgroundColor: '#f14c3c',
+                backgroundColor: '#00b79a',
                 px: 3,
                 py: 1,
                 '&:hover': {
-                  backgroundColor: '#d4372d'
+                  backgroundColor: '#0c4829'
                 },
                 '&:disabled': {
                   backgroundColor: '#ccc'

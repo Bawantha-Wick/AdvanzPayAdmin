@@ -12,7 +12,7 @@ import Users from './components/user/Users';
 import UserRoles from './components/user/UserRoles';
 import Employees from './components/employee/Employees';
 import EmployeeRequests from './components/employee/EmployeeRequests';
-import AuthorizeEmployees from './components/backup/AuthorizeEmployees';
+import AuthorizeEmployees from './components/legacy/AuthorizeEmployees.legacy';
 import Settlements from './components/settlement/Settlements';
 import Reports from './components/report/Reports';
 

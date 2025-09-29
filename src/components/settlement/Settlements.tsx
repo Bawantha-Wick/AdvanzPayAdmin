@@ -70,7 +70,7 @@ export default function Settlements() {
   }, [searchTerm]);
 
   return (
-    <Box sx={{ width: '100%', bgcolor: '#fcf9f1', borderRadius: 2, p: 3 }}>
+    <Box sx={{ width: '100%', bgcolor: '#eefff3ff', borderRadius: 2, p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
         <TextField
           placeholder="Search mail"
@@ -143,7 +143,7 @@ export default function Settlements() {
             justifyContent: 'space-between',
             alignItems: 'center',
             p: 1.5,
-            backgroundColor: '#fcf9f1',
+            backgroundColor: '#eefff3ff',
             borderBottomLeftRadius: '8px',
             borderBottomRightRadius: '8px'
           }}
@@ -168,7 +168,7 @@ export default function Settlements() {
                 height: '32px',
                 width: '32px',
                 padding: 0,
-                border: '1px solid #e9d9c2',
+                border: '1px solid #eefff3ff',
                 borderRadius: '4px',
                 color: '#000',
                 backgroundColor: 'transparent',
@@ -188,7 +188,7 @@ export default function Settlements() {
                 height: '32px',
                 width: '32px',
                 padding: 0,
-                border: '1px solid #e9d9c2',
+                border: '1px solid #eefff3ff',
                 borderRadius: '4px',
                 color: '#000',
                 backgroundColor: 'transparent',

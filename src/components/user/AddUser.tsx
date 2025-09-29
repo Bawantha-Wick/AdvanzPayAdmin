@@ -468,9 +468,9 @@ const AddUser: React.FC<AddUserProps> = ({ open, onClose, onSave, mode = 'add', 
                         borderRadius: '8px',
                         height: '2.2rem',
                         borderColor: userData.isActive ? '#e6d1b5' : '#4caf50',
-                        color: userData.isActive ? '#e07a64' : '#4caf50',
+                        color: userData.isActive ? '#0d4829' : '#4caf50',
                         '&:hover': {
-                          borderColor: userData.isActive ? '#d06954' : '#45a049',
+                          borderColor: userData.isActive ? '#25BD6F' : '#45a049',
                           backgroundColor: userData.isActive ? 'rgba(224, 122, 100, 0.04)' : 'rgba(76, 175, 80, 0.04)'
                         }
                       }}
@@ -491,11 +491,11 @@ const AddUser: React.FC<AddUserProps> = ({ open, onClose, onSave, mode = 'add', 
               sx={{
                 borderRadius: '8px',
                 height: '3rem',
-                backgroundColor: '#e07a64',
+                backgroundColor: '#0d4829',
                 px: 3,
                 py: 1,
                 '&:hover': {
-                  backgroundColor: '#d06954'
+                  backgroundColor: '#25BD6F'
                 },
                 '&:disabled': {
                   backgroundColor: '#ccc'

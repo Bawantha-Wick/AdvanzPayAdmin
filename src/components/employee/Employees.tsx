@@ -11,7 +11,7 @@ import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { FaRegEdit } from 'react-icons/fa';
-import { InputAdornment, TextField } from '@mui/material';
+import { InputAdornment, TextField, Switch } from '@mui/material';
 import { IoMdSearch } from 'react-icons/io';
 import { IoAddCircleOutline } from 'react-icons/io5';
 import { MdFileUpload } from 'react-icons/md';
@@ -22,7 +22,7 @@ import { LoadingSpinner } from '../common/LoadingSpinner';
 import { ErrorDisplay } from '../common/ErrorDisplay';
 
 interface Column {
-  id: 'no' | 'name' | 'mobile' | 'email' | 'salary' | 'accountStatus' | 'approveStatus' | 'action';
+  id: 'name' | 'employees' | 'accountStatus' | 'action';
   label: string;
   minWidth?: number;
   align?: 'center';
@@ -30,14 +30,10 @@ interface Column {
 }
 
 const columns: readonly Column[] = [
-  { id: 'no', label: 'EMPLOYEE ID', minWidth: 100 },
-  { id: 'name', label: 'EMPLOYEE NAME', minWidth: 170 },
-  { id: 'mobile', label: 'MOBILE NO', minWidth: 130 },
-  { id: 'email', label: 'EMAIL', minWidth: 170 },
-  { id: 'salary', label: 'SALARY (LKR)', minWidth: 130 },
-  { id: 'accountStatus', label: 'ACCOUNT STATUS', minWidth: 150 },
-  { id: 'approveStatus', label: 'APPROVE STATUS', minWidth: 150 },
-  { id: 'action', label: 'ACTION', minWidth: 130 }
+  { id: 'name', label: 'NAME', minWidth: 200 },
+  { id: 'employees', label: 'EMPLOYEES', minWidth: 150 },
+  { id: 'accountStatus', label: 'ACCOUNT STATUS', minWidth: 200 },
+  { id: 'action', label: 'ACTION', minWidth: 200 }
 ];
 
 export default function Employees() {
@@ -145,6 +141,20 @@ export default function Employees() {
     retryFetchEmployees(); // Refresh the employee list
   };
 
+  const handleStatusToggle = async (employeeId: number, currentStatus: string) => {
+    try {
+      // Update the employee status optimistically
+      setEmployees((prev) => prev.map((emp) => (emp.no === employeeId ? { ...emp, status: currentStatus === 'ACTV' ? 'INAC' : 'ACTV' } : emp)));
+
+      // TODO: Add API call to update employee status
+      // await employeeService.updateEmployeeStatus(employeeId, newStatus);
+    } catch (err) {
+      // Revert the optimistic update on error
+      setEmployees((prev) => prev.map((emp) => (emp.no === employeeId ? { ...emp, status: currentStatus } : emp)));
+      setError(err instanceof Error ? err.message : 'Failed to update employee status');
+    }
+  };
+
   // Show loading spinner
   if (loading) {
     return <LoadingSpinner message="Loading employees..." />;
@@ -156,7 +166,7 @@ export default function Employees() {
   }
 
   return (
-    <Box sx={{ width: '100%', bgcolor: '#fcf9f1', borderRadius: 2, p: 3 }}>
+    <Box sx={{ width: '100%', bgcolor: '#eefff3ff', borderRadius: 2, p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
         <TextField
           placeholder="Search employees..."
@@ -185,10 +195,10 @@ export default function Employees() {
             startIcon={<MdFileUpload />}
             sx={{
               borderRadius: '8px',
-              color: '#e07a64',
-              borderColor: '#e07a64',
+              color: '#0d4829',
+              borderColor: '#0d4829',
               '&:hover': {
-                borderColor: '#d06954',
+                borderColor: '#25BD6F',
                 backgroundColor: 'rgba(224, 122, 100, 0.04)'
               }
             }}
@@ -202,9 +212,9 @@ export default function Employees() {
             onClick={handleOpenAddEmployeeModal}
             sx={{
               borderRadius: '8px',
-              backgroundColor: '#e07a64',
+              backgroundColor: '#0d4829',
               '&:hover': {
-                backgroundColor: '#d06954'
+                backgroundColor: '#25BD6F'
               }
             }}
           >
@@ -229,61 +239,49 @@ export default function Employees() {
               {employees.map((employee) => {
                 return (
                   <TableRow hover role="checkbox" tabIndex={-1} key={employee.no} sx={{ '& td': { borderColor: '#f0f0f0' } }}>
-                    <TableCell>{employee.no}</TableCell>
-                    <TableCell>{employee.name}</TableCell>
-                    <TableCell>{employee.mobile}</TableCell>
-                    <TableCell>{employee.email}</TableCell>
-                    <TableCell>LKR {employee.basicSalAmt}</TableCell>
                     <TableCell>
-                      <Box
-                        sx={{
-                          backgroundColor: employee.status === 'ACTV' ? '#ccf1ea' : '#fcd6d5',
-                          color: employee.status === 'ACTV' ? '#00b79a' : '#ee3827',
-                          display: 'inline-block',
-                          px: 2,
-                          py: 0.5,
-                          borderRadius: 1,
-                          width: '120px',
-                          textAlign: 'center'
-                        }}
-                      >
-                        <Typography variant="body2">{employee.statusLabel}</Typography>
-                      </Box>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                        {employee.name}
+                      </Typography>
                     </TableCell>
                     <TableCell>
-                      <Box
+                      <Typography variant="body2">{employee.basicSalAmt || '20'}</Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Switch
+                        checked={employee.status === 'ACTV'}
+                        onChange={() => handleStatusToggle(employee.no, employee.status)}
+                        color="success"
                         sx={{
-                          backgroundColor: employee.status === 'ACTV' ? '#ccf1ea' : '#fcd6d5',
-                          color: employee.status === 'ACTV' ? '#00b79a' : '#ee3827',
-                          display: 'inline-block',
-                          px: 2,
-                          py: 0.5,
-                          borderRadius: 1,
-                          width: '120px',
-                          textAlign: 'center'
+                          '& .MuiSwitch-switchBase.Mui-checked': {
+                            color: '#2e7d35'
+                          },
+                          '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                            backgroundColor: '#d1f5d3'
+                          }
                         }}
-                      >
-                        <Typography variant="body2">{employee.apStatusLabel}</Typography>
-                      </Box>
+                      />
                     </TableCell>
                     <TableCell>
                       <Button
-                        size="medium"
+                        size="small"
                         variant="outlined"
                         startIcon={<FaRegEdit />}
                         onClick={() => handleOpenEditEmployeeModal(employee)}
                         sx={{
-                          color: '#e07a64',
-                          borderColor: '#e07a64',
-                          borderRadius: '10px',
-                          padding: '6px 16px',
+                          color: '#0D4829',
+                          borderColor: '#0D4829',
+                          borderRadius: '4px',
+                          padding: '4px 12px',
+                          fontSize: '12px',
+                          textTransform: 'none',
                           '&:hover': {
-                            borderColor: '#d06954',
-                            backgroundColor: 'rgba(224, 122, 100, 0.04)'
+                            borderColor: '#0D4829',
+                            backgroundColor: 'rgba(245, 124, 0, 0.04)'
                           }
                         }}
                       >
-                        View & Edit
+                        VIEW & EDIT
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -307,7 +305,7 @@ export default function Employees() {
             justifyContent: 'space-between',
             alignItems: 'center',
             p: 1.5,
-            backgroundColor: '#fcf9f1',
+            backgroundColor: '#eefff3ff',
             borderBottomLeftRadius: '8px',
             borderBottomRightRadius: '8px'
           }}
@@ -332,7 +330,7 @@ export default function Employees() {
                 height: '32px',
                 width: '32px',
                 padding: 0,
-                border: '1px solid #e9d9c2',
+                border: '1px solid #eefff3ff',
                 borderRadius: '4px',
                 color: '#000',
                 backgroundColor: 'transparent',
@@ -352,7 +350,7 @@ export default function Employees() {
                 height: '32px',
                 width: '32px',
                 padding: 0,
-                border: '1px solid #e9d9c2',
+                border: '1px solid #eefff3ff',
                 borderRadius: '4px',
                 color: '#000',
                 backgroundColor: 'transparent',

@@ -10,28 +10,40 @@ import IconButton from '@mui/material/IconButton';
 import { Grid } from '@mui/material';
 import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
+import Slider from '@mui/material/Slider';
+import Switch from '@mui/material/Switch';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import CloseIcon from '@mui/icons-material/Close';
-import HistoryIcon from '@mui/icons-material/History';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import TransactionHistory from './TransactionHistory';
-import { employeeService } from '../../services/employeeService';
-import type { CreateCorpEmployeeData, UpdateCorpEmployeeData } from '../../types/api';
+
+// import { employeeService } from '../../services/employeeService';
+// import type { CreateCorpEmployeeData, UpdateCorpEmployeeData } from '../../types/api';
 
 export interface EmployeeFormData {
-  id: string;
+  corporationName: string;
+  payDate: string;
   name: string;
+  jobTitle: string;
   email: string;
   mobile: string;
-  salary: string;
+  salaryLimits: {
+    minimum: string;
+    maximum: string;
+    percentage: string;
+    capAmount: string;
+  };
+  ewaConfiguration: {
+    maxEwaPercentage: number;
+    adHocTransactionFee: string;
+    enableAutoApproval: boolean;
+  };
+  feeStructure: {
+    manualWithdrawalFee: string;
+    automatedWithdrawalFee: string;
+  };
   accountStatus?: boolean;
   approveStatus?: boolean;
   status?: 'ACTV' | 'INAC' | 'BLCK';
-  bankDetails: {
-    accountName: string;
-    accountNumber: string;
-    bankName: string;
-    branch: string;
-  };
 }
 
 interface AddEmployeeProps {
@@ -44,24 +56,32 @@ interface AddEmployeeProps {
 
 const AddEmployee: React.FC<AddEmployeeProps> = ({ open, onClose, onSave, mode = 'add', employeeData: initialEmployeeData }) => {
   const [employeeData, setEmployeeData] = React.useState<EmployeeFormData>({
-    id: '',
+    corporationName: '',
+    payDate: '1',
     name: '',
+    jobTitle: 'Manager',
     email: '',
     mobile: '',
-    salary: '',
+    salaryLimits: {
+      minimum: '10000',
+      maximum: '10000',
+      percentage: '10000',
+      capAmount: '10000'
+    },
+    ewaConfiguration: {
+      maxEwaPercentage: 51,
+      adHocTransactionFee: '5',
+      enableAutoApproval: true
+    },
+    feeStructure: {
+      manualWithdrawalFee: '3',
+      automatedWithdrawalFee: '2'
+    },
     accountStatus: true,
     approveStatus: true,
-    status: 'ACTV',
-    bankDetails: {
-      accountName: '',
-      accountNumber: '',
-      bankName: '',
-      branch: ''
-    }
+    status: 'ACTV'
   });
-  const [showHistory, setShowHistory] = React.useState<boolean>(false);
-  const [detailsExpanded, setDetailsExpanded] = React.useState<boolean>(true);
-  const [historyExpanded, setHistoryExpanded] = React.useState<boolean>(false);
+  const [currentView, setCurrentView] = React.useState<'main' | 'configuration'>('main');
   const [loading, setLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>('');
   const [isFormDisabled, setIsFormDisabled] = React.useState<boolean>(false);
@@ -73,12 +93,23 @@ const AddEmployee: React.FC<AddEmployeeProps> = ({ open, onClose, onSave, mode =
     if (mode === 'edit' && initialEmployeeData) {
       setEmployeeData({
         ...initialEmployeeData,
-        // Ensure bankDetails exists
-        bankDetails: initialEmployeeData.bankDetails || {
-          accountName: '',
-          accountNumber: '',
-          bankName: '',
-          branch: ''
+        // Ensure salaryLimits exists
+        salaryLimits: initialEmployeeData.salaryLimits || {
+          minimum: '10000',
+          maximum: '10000',
+          percentage: '10000',
+          capAmount: '10000'
+        },
+        // Ensure ewaConfiguration exists
+        ewaConfiguration: initialEmployeeData.ewaConfiguration || {
+          maxEwaPercentage: 51,
+          adHocTransactionFee: '5',
+          enableAutoApproval: true
+        },
+        // Ensure feeStructure exists
+        feeStructure: initialEmployeeData.feeStructure || {
+          manualWithdrawalFee: '3',
+          automatedWithdrawalFee: '2'
         },
         // Set default status if not provided
         status: initialEmployeeData.status || 'ACTV'
@@ -88,20 +119,30 @@ const AddEmployee: React.FC<AddEmployeeProps> = ({ open, onClose, onSave, mode =
     } else if (mode === 'add') {
       // Reset form for add mode
       setEmployeeData({
-        id: '',
+        corporationName: '',
+        payDate: '1',
         name: '',
+        jobTitle: 'Manager',
         email: '',
         mobile: '',
-        salary: '',
+        salaryLimits: {
+          minimum: '10000',
+          maximum: '10000',
+          percentage: '10000',
+          capAmount: '10000'
+        },
+        ewaConfiguration: {
+          maxEwaPercentage: 51,
+          adHocTransactionFee: '5',
+          enableAutoApproval: true
+        },
+        feeStructure: {
+          manualWithdrawalFee: '3',
+          automatedWithdrawalFee: '2'
+        },
         accountStatus: true,
         approveStatus: true,
-        status: 'ACTV',
-        bankDetails: {
-          accountName: '',
-          accountNumber: '',
-          bankName: '',
-          branch: ''
-        }
+        status: 'ACTV'
       });
       setIsFormDisabled(false);
     }
@@ -116,11 +157,11 @@ const AddEmployee: React.FC<AddEmployeeProps> = ({ open, onClose, onSave, mode =
     if (error) setError('');
   };
 
-  const handleBankDetailsChange = (field: keyof typeof employeeData.bankDetails, value: string) => {
+  const handleSalaryLimitsChange = (field: keyof typeof employeeData.salaryLimits, value: string) => {
     setEmployeeData({
       ...employeeData,
-      bankDetails: {
-        ...employeeData.bankDetails,
+      salaryLimits: {
+        ...employeeData.salaryLimits,
         [field]: value
       }
     });
@@ -128,14 +169,59 @@ const AddEmployee: React.FC<AddEmployeeProps> = ({ open, onClose, onSave, mode =
     if (error) setError('');
   };
 
-  // Mock transaction history data
-  const historyData = [
-    { date: '2023/10/02', referenceNo: '789845', accountNo: '12894', status: 'Active', amount: '900 USD' },
-    { date: '2023/09/15', referenceNo: '789123', accountNo: '12894', status: 'Active', amount: '850 USD' },
-    { date: '2023/08/20', referenceNo: '788956', accountNo: '12894', status: 'Active', amount: '900 USD' },
-    { date: '2023/07/30', referenceNo: '787112', accountNo: '12894', status: 'Active', amount: '900 USD' },
-    { date: '2023/06/25', referenceNo: '786540', accountNo: '12894', status: 'Active', amount: '850 USD' }
-  ];
+  const handleEwaConfigurationChange = (field: keyof typeof employeeData.ewaConfiguration, value: string | number | boolean) => {
+    setEmployeeData({
+      ...employeeData,
+      ewaConfiguration: {
+        ...employeeData.ewaConfiguration,
+        [field]: value
+      }
+    });
+    // Clear error when user starts typing
+    if (error) setError('');
+  };
+
+  const handleFeeStructureChange = (field: keyof typeof employeeData.feeStructure, value: string) => {
+    setEmployeeData({
+      ...employeeData,
+      feeStructure: {
+        ...employeeData.feeStructure,
+        [field]: value
+      }
+    });
+    // Clear error when user starts typing
+    if (error) setError('');
+  };
+
+  const showConfigurationView = () => {
+    setCurrentView('configuration');
+  };
+
+  const showMainView = () => {
+    setCurrentView('main');
+  };
+
+  const handleSaveConfiguration = async () => {
+    try {
+      setLoading(true);
+      setError('');
+
+      // You can add specific configuration validation here if needed
+      console.log('Saving configuration:', employeeData.ewaConfiguration, employeeData.feeStructure);
+
+      // Simulate API call or actual save logic
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Show success message or handle as needed
+      setCurrentView('main');
+    } catch (err: unknown) {
+      console.error('Error saving configuration:', err);
+      const errorMessage = err instanceof Error ? err.message : 'Failed to save configuration. Please try again.';
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleSave = async () => {
     try {
@@ -143,48 +229,46 @@ const AddEmployee: React.FC<AddEmployeeProps> = ({ open, onClose, onSave, mode =
       setError('');
 
       // Basic validation
-      if (!employeeData.name || !employeeData.email || !employeeData.mobile || !employeeData.salary) {
+      if (!employeeData.corporationName || !employeeData.name || !employeeData.email || !employeeData.mobile) {
         setError('Please fill in all required fields');
         setLoading(false);
         return;
       }
 
-      if (!employeeData.bankDetails.accountName || !employeeData.bankDetails.accountNumber || !employeeData.bankDetails.bankName || !employeeData.bankDetails.branch) {
-        setError('Please fill in all bank details');
+      if (!employeeData.salaryLimits.minimum || !employeeData.salaryLimits.maximum || !employeeData.salaryLimits.percentage || !employeeData.salaryLimits.capAmount) {
+        setError('Please fill in all salary limit details');
         setLoading(false);
         return;
       }
 
       if (mode === 'add') {
         // Map form data to API format for creation
-        const apiData: CreateCorpEmployeeData = {
-          name: employeeData.name,
-          email: employeeData.email,
-          mobile: employeeData.mobile,
-          basicSalAmt: parseFloat(employeeData.salary) || 0,
-          accNo: employeeData.bankDetails.accountNumber,
-          accName: employeeData.bankDetails.accountName,
-          accBank: employeeData.bankDetails.bankName,
-          accBranch: employeeData.bankDetails.branch
-        };
-
-        await employeeService.createCorpEmployee(apiData);
+        // const apiData: CreateCorpEmployeeData = {
+        // name: employeeData.name,
+        // email: employeeData.email,
+        // mobile: employeeData.mobile,
+        // basicSalAmt: parseFloat(employeeData.salary) || 0,
+        // accNo: employeeData.bankDetails.accountNumber,
+        // accName: employeeData.bankDetails.accountName,
+        // accBank: employeeData.bankDetails.bankName,
+        // accBranch: employeeData.bankDetails.branch
+        // };
+        // await employeeService.createCorpEmployee(apiData);
       } else {
         // Map form data to API format for update
-        const updateData: UpdateCorpEmployeeData = {
-          no: parseInt(employeeData.id) || 0,
-          name: employeeData.name,
-          email: employeeData.email,
-          mobile: employeeData.mobile,
-          basicSalAmt: parseFloat(employeeData.salary) || 0,
-          accNo: employeeData.bankDetails.accountNumber,
-          accName: employeeData.bankDetails.accountName,
-          accBank: employeeData.bankDetails.bankName,
-          accBranch: employeeData.bankDetails.branch,
-          status: employeeData.status || 'ACTV'
-        };
-
-        await employeeService.updateCorpEmployee(updateData);
+        // const updateData: UpdateCorpEmployeeData = {
+        // no: parseInt(employeeData.id) || 0,
+        // name: employeeData.name,
+        // email: employeeData.email,
+        // mobile: employeeData.mobile,
+        // basicSalAmt: parseFloat(employeeData.salary) || 0,
+        // accNo: employeeData.bankDetails.accountNumber,
+        // accName: employeeData.bankDetails.accountName,
+        // accBank: employeeData.bankDetails.bankName,
+        // accBranch: employeeData.bankDetails.branch,
+        // status: employeeData.status || 'ACTV'
+        // };
+        // await employeeService.updateCorpEmployee(updateData);
       }
 
       onSave(employeeData);
@@ -195,63 +279,6 @@ const AddEmployee: React.FC<AddEmployeeProps> = ({ open, onClose, onSave, mode =
       setError(errorMessage);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleDeactivate = () => {
-    // Set status to inactive and disable form fields
-    setEmployeeData({
-      ...employeeData,
-      status: 'INAC',
-      accountStatus: false
-    });
-    setIsFormDisabled(true);
-  };
-
-  const handleBlock = () => {
-    if (employeeData.status === 'BLCK') {
-      // If currently blocked, unblock (set to active)
-      setEmployeeData({
-        ...employeeData,
-        status: 'ACTV',
-        accountStatus: true
-      });
-    } else {
-      // Set status to blocked but keep form fields enabled
-      setEmployeeData({
-        ...employeeData,
-        status: 'BLCK',
-        accountStatus: false
-      });
-    }
-    // Don't disable form fields for blocked status
-  };
-
-  const handleReactivate = () => {
-    // Set status back to active and enable form fields
-    setEmployeeData({
-      ...employeeData,
-      status: 'ACTV',
-      accountStatus: true
-    });
-    setIsFormDisabled(false);
-  };
-
-  const toggleHistory = () => {
-    if (showHistory) {
-      // If showing history, collapse history first, then expand details
-      setHistoryExpanded(false);
-      setTimeout(() => {
-        setShowHistory(false);
-        setDetailsExpanded(true);
-      }, 300);
-    } else {
-      // If showing details, collapse details first, then expand history
-      setDetailsExpanded(false);
-      setTimeout(() => {
-        setShowHistory(true);
-        setHistoryExpanded(true);
-      }, 300);
     }
   };
 
@@ -271,7 +298,7 @@ const AddEmployee: React.FC<AddEmployeeProps> = ({ open, onClose, onSave, mode =
       <DialogTitle sx={{ p: 0, mb: 3 }}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="h6" fontWeight="medium">
-            {mode === 'add' ? 'Add new employee' : 'Edit Employee'}
+            {mode === 'add' ? 'Add new Corporate' : 'Edit Corporate'}
           </Typography>
           <IconButton onClick={onClose} size="small">
             <CloseIcon />
@@ -285,41 +312,88 @@ const AddEmployee: React.FC<AddEmployeeProps> = ({ open, onClose, onSave, mode =
         </Alert>
       )}
 
-      <DialogContent sx={{ p: 0, minHeight: '65vh', position: 'relative' }}>
+      <DialogContent sx={{ p: 0, minHeight: '65vh', position: 'relative', bgcolor: '' }}>
         <Box component="form" noValidate sx={{ mt: 1 }}>
-          <Collapse in={detailsExpanded} timeout={300}>
+          {/* Main Form View */}
+          <Collapse in={currentView === 'main'} timeout={300}>
             <Box>
-              <Grid container spacing={2}>
-                {/* First row */}
-                <Grid /*xs={12} md={6}*/ size={6}>
-                  <Typography variant="subtitle1" fontWeight="medium" mb={1}>
-                    Employee ID
+              {/* Corporation name and Pay date row */}
+              <Grid container spacing={3} mb={3}>
+                <Grid size={6}>
+                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
+                    Corporation name
                   </Typography>
                   <TextField
                     fullWidth
-                    placeholder="Enter employee id"
-                    value={employeeData.id}
-                    onChange={(e) => handleChange('id', e.target.value)}
+                    placeholder="Enter name"
+                    value={employeeData.corporationName}
+                    onChange={(e) => handleChange('corporationName', e.target.value)}
                     disabled={isFormDisabled}
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         borderRadius: '8px',
-                        height: '3rem',
+                        height: '48px',
+                        fontSize: '14px',
                         '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#e0e0e0'
                         },
                         '&:hover .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#e0e0e0'
                         },
                         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#e0e0e0'
                         }
                       }
                     }}
                   />
                 </Grid>
-                <Grid /*xs={12} md={6}*/ size={6}>
-                  <Typography variant="subtitle1" fontWeight="medium" mb={1}>
+                <Grid size={6}>
+                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
+                    Pay date
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    select
+                    value={employeeData.payDate}
+                    onChange={(e) => handleChange('payDate', e.target.value)}
+                    disabled={isFormDisabled}
+                    SelectProps={{
+                      native: true
+                    }}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '8px',
+                        height: '48px',
+                        fontSize: '14px',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        }
+                      }
+                    }}
+                  >
+                    {[...Array(31)].map((_, i) => (
+                      <option key={i + 1} value={i + 1}>
+                        {i + 1}
+                      </option>
+                    ))}
+                  </TextField>
+                </Grid>
+              </Grid>
+
+              {/* Contact Details Section */}
+              <Typography variant="h6" color="#0c4829" fontWeight="medium" mb={2}>
+                Contact Details
+              </Typography>
+
+              <Grid container spacing={3} mb={3}>
+                <Grid size={6}>
+                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
                     Name
                   </Typography>
                   <TextField
@@ -331,24 +405,54 @@ const AddEmployee: React.FC<AddEmployeeProps> = ({ open, onClose, onSave, mode =
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         borderRadius: '8px',
-                        height: '3rem',
+                        height: '48px',
+                        fontSize: '14px',
                         '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#e0e0e0'
                         },
                         '&:hover .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#8cdeb3'
                         },
                         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#76d8a5'
                         }
                       }
                     }}
                   />
                 </Grid>
+                <Grid size={6}>
+                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
+                    Job Title
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    placeholder="Manager"
+                    value={employeeData.jobTitle}
+                    onChange={(e) => handleChange('jobTitle', e.target.value)}
+                    disabled={isFormDisabled}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '8px',
+                        height: '48px',
+                        fontSize: '14px',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        }
+                      }
+                    }}
+                  />
+                </Grid>
+              </Grid>
 
-                {/* Second row */}
-                <Grid /*xs={12} md={6}*/ size={6}>
-                  <Typography variant="subtitle1" fontWeight="medium" mb={1}>
+              <Grid container spacing={3} mb={3}>
+                <Grid size={6}>
+                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
                     Email
                   </Typography>
                   <TextField
@@ -361,23 +465,23 @@ const AddEmployee: React.FC<AddEmployeeProps> = ({ open, onClose, onSave, mode =
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         borderRadius: '8px',
-                        height: '3rem',
+                        height: '48px',
+                        fontSize: '14px',
                         '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#e0e0e0'
                         },
                         '&:hover .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#e0e0e0'
                         },
                         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#e0e0e0'
                         }
                       }
                     }}
                   />
                 </Grid>
-                {/* Third row */}
-                <Grid /*xs={12} md={6}*/ size={6}>
-                  <Typography variant="subtitle1" fontWeight="medium" mb={1}>
+                <Grid size={6}>
+                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
                     Mobile number
                   </Typography>
                   <TextField
@@ -389,289 +493,433 @@ const AddEmployee: React.FC<AddEmployeeProps> = ({ open, onClose, onSave, mode =
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         borderRadius: '8px',
-                        height: '3rem',
+                        height: '48px',
+                        fontSize: '14px',
                         '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#e0e0e0'
                         },
                         '&:hover .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#e0e0e0'
                         },
                         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#e0e0e0'
                         }
                       }
                     }}
                   />
                 </Grid>
-                <Grid /*xs={12} md={6}*/ size={6}>
-                  <Typography variant="subtitle1" fontWeight="medium" mb={1}>
-                    Basic salary (USD)
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    placeholder="Enter salary"
-                    value={employeeData.salary}
-                    onChange={(e) => handleChange('salary', e.target.value)}
-                    disabled={isFormDisabled}
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '8px',
-                        height: '3rem',
-                        '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
-                        },
-                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
-                        }
-                      }
-                    }}
-                  />
-                </Grid>
-
-                {mode === 'edit' && (
-                  <Grid /*xs={12} md={6}*/ size={6}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mt: 1, mb: 2 }}>
-                      <Typography variant="subtitle1" fontWeight="medium" mr={1}>
-                        Account status :
-                      </Typography>
-                      <Box
-                        sx={{
-                          backgroundColor: employeeData.status === 'ACTV' ? '#ccf1ea' : employeeData.status === 'INAC' ? '#f5f5f5' : '#ffe6e6',
-                          color: employeeData.status === 'ACTV' ? '#00b79a' : employeeData.status === 'INAC' ? '#666' : '#d32f2f',
-                          display: 'inline-block',
-                          px: 3,
-                          py: 0.5,
-                          borderRadius: 1,
-                          minWidth: '80px',
-                          textAlign: 'center'
-                        }}
-                      >
-                        <Typography variant="body2">{employeeData.status === 'ACTV' ? 'Active' : employeeData.status === 'INAC' ? 'Inactive' : 'Blocked'}</Typography>
-                      </Box>
-                    </Box>
-                    <Box sx={{ display: 'flex', gap: 2 }}>
-                      <Button
-                        variant="outlined"
-                        onClick={employeeData.status === 'INAC' ? handleReactivate : handleDeactivate}
-                        sx={{
-                          borderRadius: '8px',
-                          height: '2.2rem',
-                          color: employeeData.status === 'INAC' ? '#00b79a' : '#e07a64',
-                          borderColor: employeeData.status === 'INAC' ? '#00b79a' : '#e07a64',
-                          '&:hover': {
-                            borderColor: employeeData.status === 'INAC' ? '#009985' : '#d06954',
-                            backgroundColor: employeeData.status === 'INAC' ? 'rgba(0, 183, 154, 0.04)' : 'rgba(224, 122, 100, 0.04)'
-                          }
-                        }}
-                      >
-                        {employeeData.status === 'INAC' ? 'Reactivate employee' : 'Deactivate employee'}
-                      </Button>
-                      <Button
-                        variant="outlined"
-                        onClick={handleBlock}
-                        sx={{
-                          borderRadius: '8px',
-                          height: '2.2rem',
-                          color: employeeData.status === 'BLCK' ? '#00b79a' : '#e07a64',
-                          borderColor: employeeData.status === 'BLCK' ? '#00b79a' : '#e07a64',
-                          '&:hover': {
-                            borderColor: employeeData.status === 'BLCK' ? '#009985' : '#d06954',
-                            backgroundColor: employeeData.status === 'BLCK' ? 'rgba(0, 183, 154, 0.04)' : 'rgba(224, 122, 100, 0.04)'
-                          }
-                        }}
-                      >
-                        {employeeData.status === 'BLCK' ? 'Unblock employee' : 'Block employee'}
-                      </Button>
-                    </Box>
-                  </Grid>
-                )}
               </Grid>
 
-              {/* Bank Details Section */}
-              <Typography variant="subtitle1" fontWeight="medium" mt={4} mb={2}>
-                Bank Details
+              {/* Salary advanced limits Section */}
+              <Typography variant="h6" color="#333" fontWeight="medium" mb={2}>
+                Salary advanced limits (LKR)
               </Typography>
 
-              <Grid container spacing={3}>
-                <Grid /*xs={12} md={6}*/ size={6}>
-                  <Typography variant="subtitle1" fontWeight="medium" mb={1}>
-                    Account name
+              <Grid container spacing={3} mb={3}>
+                <Grid size={6}>
+                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
+                    Minimum
                   </Typography>
                   <TextField
                     fullWidth
-                    placeholder="John Doe"
-                    value={employeeData.bankDetails.accountName}
-                    onChange={(e) => handleBankDetailsChange('accountName', e.target.value)}
+                    placeholder="10000"
+                    value={employeeData.salaryLimits.minimum}
+                    onChange={(e) => handleSalaryLimitsChange('minimum', e.target.value)}
                     disabled={isFormDisabled}
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         borderRadius: '8px',
-                        height: '3rem',
+                        height: '48px',
+                        fontSize: '14px',
                         '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#e0e0e0'
                         },
                         '&:hover .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#e0e0e0'
                         },
                         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#e0e0e0'
                         }
                       }
                     }}
                   />
                 </Grid>
-                <Grid /*xs={12} md={6}*/ size={6}>
-                  <Typography variant="subtitle1" fontWeight="medium" mb={1}>
-                    Account number
+                <Grid size={6}>
+                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
+                    Maximum
                   </Typography>
                   <TextField
                     fullWidth
-                    placeholder="52898656"
-                    value={employeeData.bankDetails.accountNumber}
-                    onChange={(e) => handleBankDetailsChange('accountNumber', e.target.value)}
+                    placeholder="10000"
+                    value={employeeData.salaryLimits.maximum}
+                    onChange={(e) => handleSalaryLimitsChange('maximum', e.target.value)}
                     disabled={isFormDisabled}
                     sx={{
                       '& .MuiOutlinedInput-root': {
                         borderRadius: '8px',
-                        height: '3rem',
+                        height: '48px',
+                        fontSize: '14px',
                         '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#e0e0e0'
                         },
                         '&:hover .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#e0e0e0'
                         },
                         '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
-                        }
-                      }
-                    }}
-                  />
-                </Grid>
-                <Grid /*xs={12} md={6}*/ size={6}>
-                  <Typography variant="subtitle1" fontWeight="medium" mb={1}>
-                    Bank name
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    placeholder="Westpac"
-                    value={employeeData.bankDetails.bankName}
-                    onChange={(e) => handleBankDetailsChange('bankName', e.target.value)}
-                    disabled={isFormDisabled}
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '8px',
-                        height: '3rem',
-                        '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
-                        },
-                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
-                        }
-                      }
-                    }}
-                  />
-                </Grid>
-                <Grid /*xs={12} md={6}*/ size={6}>
-                  <Typography variant="subtitle1" fontWeight="medium" mb={1}>
-                    Branch
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    placeholder="Sydney"
-                    value={employeeData.bankDetails.branch}
-                    onChange={(e) => handleBankDetailsChange('branch', e.target.value)}
-                    disabled={isFormDisabled}
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '8px',
-                        height: '3rem',
-                        '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
-                        },
-                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e6d1b5'
+                          borderColor: '#e0e0e0'
                         }
                       }
                     }}
                   />
                 </Grid>
               </Grid>
+
+              <Grid container spacing={3} mb={4}>
+                <Grid size={6}>
+                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
+                    Percentage
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    placeholder="10000"
+                    value={employeeData.salaryLimits.percentage}
+                    onChange={(e) => handleSalaryLimitsChange('percentage', e.target.value)}
+                    disabled={isFormDisabled}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '8px',
+                        height: '48px',
+                        fontSize: '14px',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        }
+                      }
+                    }}
+                  />
+                </Grid>
+                <Grid size={6}>
+                  <Typography variant="subtitle2" color="#606060" fontWeight="medium" mb={1}>
+                    CAP amount
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    placeholder="10000"
+                    value={employeeData.salaryLimits.capAmount}
+                    onChange={(e) => handleSalaryLimitsChange('capAmount', e.target.value)}
+                    disabled={isFormDisabled}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '8px',
+                        height: '48px',
+                        fontSize: '14px',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        }
+                      }
+                    }}
+                  />
+                </Grid>
+              </Grid>
+
+              {/* Add more button */}
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+                <Button
+                  onClick={showConfigurationView}
+                  variant="outlined"
+                  startIcon={<ExpandMoreIcon />}
+                  sx={{
+                    borderRadius: '8px',
+                    textTransform: 'none',
+                    color: '#0c4829',
+                    borderColor: '#76d8a5',
+                    fontSize: '14px',
+                    fontWeight: 'medium',
+                    py: 1,
+                    px: 2,
+                    '&:hover': {
+                      borderColor: '#76d8a5',
+                      backgroundColor: 'rgba(118,216,165,0.04)'
+                    }
+                  }}
+                >
+                  Advanced Configuration
+                </Button>
+              </Box>
             </Box>
           </Collapse>
 
-          {/* History section for edit mode */}
-          {mode === 'edit' && (
-            <Box mt={showHistory ? 0 : 3}>
-              <Box
-                onClick={toggleHistory}
+          {/* EWA Configuration and Fee Structure View */}
+          <Collapse in={currentView === 'configuration'} timeout={300}>
+            <Box>
+              {/* Back Button */}
+              <Box sx={{ mb: 3 }}>
+                <Button
+                  onClick={showMainView}
+                  variant="outlined"
+                  startIcon={<ExpandMoreIcon sx={{ transform: 'rotate(90deg)' }} />}
+                  sx={{
+                    borderRadius: '8px',
+                    textTransform: 'none',
+                    color: '#0c4829',
+                    borderColor: '#76d8a5',
+                    fontSize: '14px',
+                    fontWeight: 'medium',
+                    py: 1,
+                    px: 2,
+                    '&:hover': {
+                      borderColor: '#76d8a5',
+                      backgroundColor: 'rgba(118,216,165,0.04)'
+                    }
+                  }}
+                >
+                  Back to Main Form
+                </Button>
+              </Box>
+
+              {/* EWA Configuration */}
+              <Typography variant="h6" color="#0c4829" fontWeight="medium" mb={3}>
+                EWA Configuration
+              </Typography>
+
+              <Box mb={3}>
+                <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={2}>
+                  Max EWA Percentage ({employeeData.ewaConfiguration.maxEwaPercentage}%)
+                </Typography>
+                <Slider
+                  value={employeeData.ewaConfiguration.maxEwaPercentage}
+                  onChange={(_, value) => handleEwaConfigurationChange('maxEwaPercentage', value as number)}
+                  min={0}
+                  max={100}
+                  step={1}
+                  disabled={isFormDisabled}
+                  sx={{
+                    color: '#76d8a5',
+                    '& .MuiSlider-thumb': {
+                      backgroundColor: '#278b56ff'
+                    },
+                    '& .MuiSlider-track': {
+                      backgroundColor: '#278b56ff'
+                    },
+                    '& .MuiSlider-rail': {
+                      backgroundColor: '#e0e0e0'
+                    }
+                  }}
+                />
+              </Box>
+
+              <Grid container spacing={3} mb={3}>
+                <Grid size={6}>
+                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
+                    Ad-hoc Transaction Fixed Fee ($)
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    placeholder="5"
+                    value={employeeData.ewaConfiguration.adHocTransactionFee}
+                    onChange={(e) => handleEwaConfigurationChange('adHocTransactionFee', e.target.value)}
+                    disabled={isFormDisabled}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '8px',
+                        height: '48px',
+                        fontSize: '14px',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        }
+                      }
+                    }}
+                  />
+                </Grid>
+                <Grid size={6}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', pt: 3 }}>
+                    <FormControlLabel
+                      control={
+                        <Switch
+                          checked={employeeData.ewaConfiguration.enableAutoApproval}
+                          onChange={(e) => handleEwaConfigurationChange('enableAutoApproval', e.target.checked)}
+                          disabled={isFormDisabled}
+                          sx={{
+                            '& .MuiSwitch-switchBase.Mui-checked': {
+                              color: '#278b56ff'
+                            },
+                            '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                              backgroundColor: '#278b56ff'
+                            }
+                          }}
+                        />
+                      }
+                      label={
+                        <Typography variant="subtitle2" color="#666" fontWeight="medium">
+                          Enable Auto-Approval for Requests
+                        </Typography>
+                      }
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
+
+              {/* Fee Structure */}
+              <Typography variant="h6" color="#0c4829" fontWeight="medium" mb={3} mt={4}>
+                Fee Structure
+              </Typography>
+
+              <Grid container spacing={3} mb={3}>
+                <Grid size={6}>
+                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
+                    Manual/Ad-hoc Withdrawal Fee (%)
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    placeholder="3"
+                    value={employeeData.feeStructure.manualWithdrawalFee}
+                    onChange={(e) => handleFeeStructureChange('manualWithdrawalFee', e.target.value)}
+                    disabled={isFormDisabled}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '8px',
+                        height: '48px',
+                        fontSize: '14px',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        }
+                      }
+                    }}
+                  />
+                </Grid>
+                <Grid size={6}>
+                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
+                    Automated Withdrawal Fee (%)
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    placeholder="2"
+                    value={employeeData.feeStructure.automatedWithdrawalFee}
+                    onChange={(e) => handleFeeStructureChange('automatedWithdrawalFee', e.target.value)}
+                    disabled={isFormDisabled}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '8px',
+                        height: '48px',
+                        fontSize: '14px',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        }
+                      }
+                    }}
+                  />
+                </Grid>
+              </Grid>
+
+              {/* Configuration Save Button */}
+              <Box display="flex" justifyContent="flex-end" mt={4} gap={2}>
+                <Button
+                  variant="outlined"
+                  onClick={showMainView}
+                  sx={{
+                    borderRadius: '8px',
+                    height: '48px',
+                    borderColor: '#76d8a5',
+                    color: '#0c4829',
+                    px: 4,
+                    py: 1,
+                    fontSize: '14px',
+                    fontWeight: 'medium',
+                    textTransform: 'none',
+                    '&:hover': {
+                      borderColor: '#76d8a5',
+                      backgroundColor: 'rgba(118,216,165,0.04)'
+                    }
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={handleSaveConfiguration}
+                  disabled={loading}
+                  sx={{
+                    borderRadius: '8px',
+                    height: '48px',
+                    backgroundColor: '#0c4829',
+                    color: 'white',
+                    px: 4,
+                    py: 1,
+                    fontSize: '14px',
+                    fontWeight: 'medium',
+                    textTransform: 'none',
+                    '&:hover': {
+                      backgroundColor: '#0b3b24'
+                    },
+                    '&:disabled': {
+                      backgroundColor: '#ccc'
+                    }
+                  }}
+                >
+                  {loading ? 'Saving Configuration...' : 'Save Configuration'}
+                </Button>
+              </Box>
+            </Box>
+          </Collapse>
+
+          {/* Main Form Save Button - Only show when in main view */}
+          <Collapse in={currentView === 'main'} timeout={300}>
+            <Box display="flex" justifyContent="flex-end" mt={4}>
+              <Button
+                variant="contained"
+                onClick={handleSave}
+                disabled={loading}
                 sx={{
-                  cursor: 'pointer',
-                  display: 'flex',
-                  alignItems: 'center',
-                  transition: 'all 0.3s ease',
-                  backgroundColor: showHistory ? '#f8efe7' : 'transparent',
-                  padding: '8px 12px',
                   borderRadius: '8px',
-                  height: '3rem',
-                  width: 'fit-content',
-                  mb: 2,
+                  height: '48px',
+                  backgroundColor: '#0c4829',
+                  color: 'white',
+                  px: 4,
+                  py: 1,
+                  fontSize: '14px',
+                  fontWeight: 'medium',
+                  textTransform: 'none',
                   '&:hover': {
-                    backgroundColor: '#f8efe7'
+                    backgroundColor: '#0b3b24'
+                  },
+                  '&:disabled': {
+                    backgroundColor: '#ccc'
                   }
                 }}
               >
-                <IconButton size="small" sx={{ mr: 1 }}>
-                  {showHistory ? <ArrowBackIcon fontSize="small" color="action" /> : <HistoryIcon fontSize="small" color="action" />}
-                </IconButton>
-                <Typography variant="subtitle1" fontWeight="medium">
-                  {showHistory ? 'Back to Employee Details' : 'Transaction History'}
-                </Typography>
-              </Box>
-
-              <Collapse in={historyExpanded} timeout={300}>
-                <Box
-                  sx={{
-                    opacity: 1,
-                    transition: 'opacity 0.3s ease-in-out'
-                  }}
-                >
-                  <TransactionHistory data={historyData} />
-                </Box>
-              </Collapse>
+                {loading ? 'Saving...' : mode === 'add' ? 'Save Corporate' : 'Update Corporate'}
+              </Button>
             </Box>
-          )}
-
-          <Box display="flex" justifyContent="flex-end" mt={4}>
-            <Button
-              variant="contained"
-              onClick={handleSave}
-              disabled={loading}
-              sx={{
-                borderRadius: '8px',
-                height: '3rem',
-                backgroundColor: '#e07a64',
-                px: 3,
-                py: 1,
-                '&:hover': {
-                  backgroundColor: '#d06954'
-                },
-                '&:disabled': {
-                  backgroundColor: '#ccc'
-                }
-              }}
-            >
-              {loading ? 'Saving...' : mode === 'add' ? 'Save employee' : 'Update employee'}
-            </Button>
-          </Box>
+          </Collapse>
         </Box>
       </DialogContent>
     </Dialog>

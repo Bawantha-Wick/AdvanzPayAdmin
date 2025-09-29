@@ -15,8 +15,8 @@ const Layout: React.FC = () => {
       dashboard: 'Dashboard',
       users: 'User Management',
       'user-roles': 'User Roles',
-      employees: 'Employee Management',
-      'employee-requests': 'Employee Requests',
+      employees: 'Corporate',
+      'employee-requests': 'Corporate Management',
       'authorize-employees': 'Authorize Employees',
       settlements: 'Settlements'
     };
@@ -27,7 +27,7 @@ const Layout: React.FC = () => {
   return (
     // bg-[#FAF9F6]
     // <div className="bg-blue-100 flex min-h-screen">
-    <div className="flex" style={{ backgroundColor: '#fffaee' }}>
+    <div className="flex" style={{ backgroundColor: '#eefff3ff' }}>
       <SideBar />
       {/* <main className="" style={{ marginLeft: '18rem', width: '100%' }}> */}
       <div className="flex-1">

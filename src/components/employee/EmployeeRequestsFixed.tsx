@@ -266,82 +266,80 @@ export default function EmployeeRequests() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => {
-                return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={index} sx={{ '& td': { borderColor: '#f0f0f0' } }}>
-                    <TableCell>
-                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                        {row.name}
-                      </Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Typography variant="body2">{row.email}</Typography>
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Switch
-                          checked={row.blockStatus === 'Active'}
-                          onChange={() => handleToggleBlockStatus(page * rowsPerPage + index)}
-                          size="small"
-                          sx={{
-                            '& .MuiSwitch-switchBase.Mui-checked': {
-                              color: '#20bf6c'
-                            },
-                            '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-                              backgroundColor: '#20bf6c'
-                            }
-                          }}
-                        />
-                        <Typography variant="body2" sx={{ fontSize: '12px', fontWeight: 500 }}>
-                          {row.blockStatus}
-                        </Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Switch
-                          checked={row.accountStatus === 'Yes'}
-                          onChange={() => handleToggleAccountStatus(page * rowsPerPage + index)}
-                          size="small"
-                          sx={{
-                            '& .MuiSwitch-switchBase.Mui-checked': {
-                              color: '#20bf6c'
-                            },
-                            '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-                              backgroundColor: '#20bf6c'
-                            }
-                          }}
-                        />
-                        <Typography variant="body2" sx={{ fontSize: '12px', fontWeight: 500 }}>
-                          {row.accountStatus}
-                        </Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Button
+              {filteredRows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, index) => (
+                <TableRow hover role="checkbox" tabIndex={-1} key={index} sx={{ '& td': { borderColor: '#f0f0f0' } }}>
+                  <TableCell>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                      {row.name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body2">{row.email}</Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Switch
+                        checked={row.blockStatus === 'Active'}
+                        onChange={() => handleToggleBlockStatus(page * rowsPerPage + index)}
                         size="small"
-                        variant="outlined"
-                        startIcon={<FaRegEdit />}
-                        onClick={() => handleOpenEditModal(row)}
                         sx={{
-                          color: '#20bf6c',
-                          borderColor: '#20bf6c',
-                          borderRadius: '4px',
-                          padding: '4px 12px',
-                          fontSize: '12px',
-                          textTransform: 'none',
-                          '&:hover': {
-                            borderColor: '#20bf6c',
-                            backgroundColor: 'rgba(32, 191, 108, 0.04)'
+                          '& .MuiSwitch-switchBase.Mui-checked': {
+                            color: '#20bf6c'
+                          },
+                          '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                            backgroundColor: '#20bf6c'
                           }
                         }}
-                      >
-                        View & Edit
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+                      />
+                      <Typography variant="body2" sx={{ fontSize: '12px', fontWeight: 500 }}>
+                        {row.blockStatus}
+                      </Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Switch
+                        checked={row.accountStatus === 'Yes'}
+                        onChange={() => handleToggleAccountStatus(page * rowsPerPage + index)}
+                        size="small"
+                        sx={{
+                          '& .MuiSwitch-switchBase.Mui-checked': {
+                            color: '#20bf6c'
+                          },
+                          '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                            backgroundColor: '#20bf6c'
+                          }
+                        }}
+                      />
+                      <Typography variant="body2" sx={{ fontSize: '12px', fontWeight: 500 }}>
+                        {row.accountStatus}
+                      </Typography>
+                    </Box>
+                  </TableCell>
+                  <TableCell>
+                    <Button
+                      size="small"
+                      variant="outlined"
+                      startIcon={<FaRegEdit />}
+                      onClick={() => handleOpenEditModal(row)}
+                      sx={{
+                        color: '#20bf6c',
+                        borderColor: '#20bf6c',
+                        borderRadius: '4px',
+                        padding: '4px 12px',
+                        fontSize: '12px',
+                        textTransform: 'none',
+                        '&:hover': {
+                          borderColor: '#20bf6c',
+                          backgroundColor: 'rgba(32, 191, 108, 0.04)'
+                        }
+                      }}
+                    >
+                      View & Edit
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
               {filteredRows.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={columns.length} sx={{ textAlign: 'center', py: 4 }}>

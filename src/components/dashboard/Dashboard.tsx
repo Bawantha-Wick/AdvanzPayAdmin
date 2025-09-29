@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Box, Card, CardContent, Typography, Paper, Popover } from '@mui/material';
-import { ArrowUpward, Business, People, RequestQuote, AccountBalance } from '@mui/icons-material';
+import { Business, People, RequestQuote, AccountBalance } from '@mui/icons-material';
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -97,7 +97,7 @@ const Dashboard: React.FC = () => {
   ];
 
   return (
-    <Box sx={{ p: 3, bgcolor: '#f8f9fa', minHeight: '100vh' }}>
+    <Box sx={{ p: 3, bgcolor: '#e5fff1ff', minHeight: '' }}>
       {/* Date Range Display */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Box /> {/* Empty box for alignment to match Reports.tsx layout */}
@@ -141,7 +141,7 @@ const Dashboard: React.FC = () => {
             }
           }}
         >
-          <Box sx={{ p: 2, textAlign: 'center', bgcolor: '#ff6b00', color: 'white' }}>
+          <Box sx={{ p: 2, textAlign: 'center', bgcolor: '#76d8a5', color: 'white' }}>
             {/* <Typography variant="subtitle1" sx={{ fontWeight: 'bold' }}> */}
             {/* {selectionStep === 'start' ? 'Select Start Date' : 'Select End Date'} */}
             {/* </Typography> */}
@@ -255,20 +255,20 @@ const Dashboard: React.FC = () => {
                   margin: '2px',
                   borderRadius: '50%',
                   '&.Mui-selected': {
-                    backgroundColor: '#ff6b00',
+                    backgroundColor: '#76d8a5',
                     color: '#fff',
                     '&:hover': {
-                      backgroundColor: '#ff6b00'
+                      backgroundColor: '#76d8a5'
                     },
                     '&:focus': {
-                      backgroundColor: '#ff6b00'
+                      backgroundColor: '#76d8a5'
                     }
                   },
                   '&:hover': {
-                    backgroundColor: 'rgba(255, 107, 0, 0.1)'
+                    backgroundColor: 'rgba(118, 216, 165, 0.1)'
                   },
                   '&.MuiPickersDay-today': {
-                    border: '1px solid #ff6b00'
+                    border: '1px solid #76d8a5'
                   },
                   '&.Mui-disabled': {
                     color: '#cccccc'
@@ -293,34 +293,29 @@ const Dashboard: React.FC = () => {
       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 3, mb: 4 }}>
         {/* Corporate Card */}
         <Box sx={{ flex: '1 1 calc(25% - 24px)', minWidth: '200px' }}>
-          <Card sx={{ bgcolor: '#fff3e0', borderRadius: '20px', position: 'relative', height: '120px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-            <CardContent sx={{ p: 2 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <Box
-                  sx={{
-                    bgcolor: '#ffb74d',
-                    p: 1,
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    mr: 1.5
-                  }}
-                >
-                  <Business sx={{ color: '#fff', fontSize: 20 }} />
-                </Box>
-                <Typography variant="body2" sx={{ color: '#666', fontWeight: 500 }}>
-                  Corporate
-                </Typography>
-              </Box>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#333', mb: 1 }}>
+          <Card sx={{ bgcolor: '#8cdeb3', borderRadius: '40px', position: 'relative', height: '9rem' }}>
+            <CardContent>
+              <Typography variant="subtitle1" sx={{ color: '#0c4829' }}>
+                Corporate
+              </Typography>
+              <Typography variant="h3" sx={{ my: 2, fontWeight: 'bold' }}>
                 40
               </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <ArrowUpward sx={{ color: '#4CAF50', fontSize: 14, mr: 0.5 }} />
-                <Typography variant="caption" sx={{ color: '#666' }}>
-                  From today data
-                </Typography>
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: '3rem',
+                  right: 20,
+                  transform: 'translateY(-50%)',
+                  bgcolor: '#ffffffff',
+                  p: 1.5,
+                  borderRadius: '18px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <Business sx={{ color: '#0c4829', fontSize: 24 }} />
               </Box>
             </CardContent>
           </Card>
@@ -328,34 +323,29 @@ const Dashboard: React.FC = () => {
 
         {/* Employees Card */}
         <Box sx={{ flex: '1 1 calc(25% - 24px)', minWidth: '200px' }}>
-          <Card sx={{ bgcolor: '#e8f5e8', borderRadius: '20px', position: 'relative', height: '120px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-            <CardContent sx={{ p: 2 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <Box
-                  sx={{
-                    bgcolor: '#66bb6a',
-                    p: 1,
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    mr: 1.5
-                  }}
-                >
-                  <People sx={{ color: '#fff', fontSize: 20 }} />
-                </Box>
-                <Typography variant="body2" sx={{ color: '#666', fontWeight: 500 }}>
-                  Employees
-                </Typography>
-              </Box>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#333', mb: 1 }}>
+          <Card sx={{ bgcolor: '#fff', borderRadius: '40px', position: 'relative', height: '9rem' }}>
+            <CardContent>
+              <Typography variant="subtitle1" sx={{ color: '#0c4829' }}>
+                Employees
+              </Typography>
+              <Typography variant="h3" sx={{ my: 2, fontWeight: 'bold' }}>
                 09
               </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <ArrowUpward sx={{ color: '#4CAF50', fontSize: 14, mr: 0.5 }} />
-                <Typography variant="caption" sx={{ color: '#666' }}>
-                  From today data
-                </Typography>
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: '3rem',
+                  right: 20,
+                  transform: 'translateY(-50%)',
+                  bgcolor: '#e8eeff',
+                  p: 1.5,
+                  borderRadius: '18px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <People sx={{ color: '#536DFE', fontSize: 24 }} />
               </Box>
             </CardContent>
           </Card>
@@ -363,34 +353,29 @@ const Dashboard: React.FC = () => {
 
         {/* Loan Requests Card */}
         <Box sx={{ flex: '1 1 calc(25% - 24px)', minWidth: '200px' }}>
-          <Card sx={{ bgcolor: '#fff8e1', borderRadius: '20px', position: 'relative', height: '120px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-            <CardContent sx={{ p: 2 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <Box
-                  sx={{
-                    bgcolor: '#ffa726',
-                    p: 1,
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    mr: 1.5
-                  }}
-                >
-                  <RequestQuote sx={{ color: '#fff', fontSize: 20 }} />
-                </Box>
-                <Typography variant="body2" sx={{ color: '#666', fontWeight: 500 }}>
-                  Loan requests
-                </Typography>
-              </Box>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#333', mb: 1 }}>
+          <Card sx={{ bgcolor: '#8cdeb3', borderRadius: '40px', position: 'relative', height: '9rem' }}>
+            <CardContent>
+              <Typography variant="subtitle1" sx={{ color: '#0c4829' }}>
+                Loan requests
+              </Typography>
+              <Typography variant="h3" sx={{ my: 2, fontWeight: 'bold' }}>
                 40
               </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <ArrowUpward sx={{ color: '#4CAF50', fontSize: 14, mr: 0.5 }} />
-                <Typography variant="caption" sx={{ color: '#666' }}>
-                  From today data
-                </Typography>
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: '3rem',
+                  right: 20,
+                  transform: 'translateY(-50%)',
+                  bgcolor: '#ffffffff',
+                  p: 1.5,
+                  borderRadius: '18px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <RequestQuote sx={{ color: '#0c4829', fontSize: 24 }} />
               </Box>
             </CardContent>
           </Card>
@@ -398,37 +383,33 @@ const Dashboard: React.FC = () => {
 
         {/* Total Loans Card */}
         <Box sx={{ flex: '1 1 calc(25% - 24px)', minWidth: '200px' }}>
-          <Card sx={{ bgcolor: '#f3e5f5', borderRadius: '20px', position: 'relative', height: '120px', boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
-            <CardContent sx={{ p: 2 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <Box
-                  sx={{
-                    bgcolor: '#8e24aa',
-                    p: 1,
-                    borderRadius: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    mr: 1.5
-                  }}
-                >
-                  <AccountBalance sx={{ color: '#fff', fontSize: 20 }} />
-                </Box>
-                <Typography variant="body2" sx={{ color: '#666', fontWeight: 500 }}>
-                  Total loans
-                </Typography>
-              </Box>
-              <Typography variant="h4" sx={{ fontWeight: 'bold', color: '#333', mb: 1 }}>
+          <Card sx={{ bgcolor: '#fff', borderRadius: '40px', position: 'relative', height: '9rem' }}>
+            <CardContent>
+              <Typography variant="subtitle1" sx={{ color: '#0c4829' }}>
+                Total loans
+              </Typography>
+              <Typography variant="h3" sx={{ my: 2, fontWeight: 'bold' }}>
                 0
               </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Typography variant="caption" sx={{ color: '#666', fontWeight: 500 }}>
-                  Commission gained
-                </Typography>
+              {/* <Typography variant="caption" sx={{ color: '#0c4829', fontWeight: 500, display: 'block', mt: 1 }}>
+                Commission gained: 0
+              </Typography> */}
+              <Box
+                sx={{
+                  position: 'absolute',
+                  top: '3rem',
+                  right: 20,
+                  transform: 'translateY(-50%)',
+                  bgcolor: '#e8eeff',
+                  p: 1.5,
+                  borderRadius: '18px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                <AccountBalance sx={{ color: '#536DFE', fontSize: 24 }} />
               </Box>
-              <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#333', mt: 0.5 }}>
-                0
-              </Typography>
             </CardContent>
           </Card>
         </Box>
@@ -438,21 +419,237 @@ const Dashboard: React.FC = () => {
       <Box sx={{ display: 'flex', gap: 3 }}>
         {/* Top Corporates Section */}
         <Box sx={{ flex: '1 1 30%', minWidth: '300px' }}>
-          <Paper sx={{ p: 3, borderRadius: '20px', height: '400px' }}>
-            <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: '#333' }}>
+          <Paper sx={{ p: 3, borderRadius: '40px', height: '520px' }}>
+            <Typography variant="h6" sx={{ mb: 2, fontWeight: 600, color: '#333' }}>
               Top Corporates
             </Typography>
-            <Box sx={{ height: 'calc(100% - 60px)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Typography variant="body2" sx={{ color: '#999', textAlign: 'center' }}>
-                No data available
-              </Typography>
+            <Box sx={{ height: 'calc(100% - 50px)', display: 'flex', flexDirection: 'column', gap: 1.5, overflow: 'auto' }}>
+              {/* Corporate Item 1 */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  p: 1.5,
+                  borderRadius: '10px',
+                  bgcolor: '#f8f9fa',
+                  border: '1px solid #e9ecef',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    bgcolor: '#e9ecef',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                  }
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: '50%',
+                    bgcolor: '#ff6b00',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mr: 1.5,
+                    fontWeight: 'bold',
+                    color: 'white',
+                    fontSize: '12px'
+                  }}
+                >
+                  #1
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 600, color: '#333', mb: 0.2, fontSize: '14px' }}>
+                    TechCorp Solutions
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#666', fontSize: '11px' }}>
+                    ₦2,450,000 • 45 employees
+                  </Typography>
+                </Box>
+              </Box>
+
+              {/* Corporate Item 2 */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  p: 1.5,
+                  borderRadius: '10px',
+                  bgcolor: '#f8f9fa',
+                  border: '1px solid #e9ecef',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    bgcolor: '#e9ecef',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                  }
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: '50%',
+                    bgcolor: '#ffb74d',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mr: 1.5,
+                    fontWeight: 'bold',
+                    color: 'white',
+                    fontSize: '12px'
+                  }}
+                >
+                  #2
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 600, color: '#333', mb: 0.2, fontSize: '14px' }}>
+                    Global Industries Ltd
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#666', fontSize: '11px' }}>
+                    ₦1,890,000 • 32 employees
+                  </Typography>
+                </Box>
+              </Box>
+
+              {/* Corporate Item 3 */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  p: 1.5,
+                  borderRadius: '10px',
+                  bgcolor: '#f8f9fa',
+                  border: '1px solid #e9ecef',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    bgcolor: '#e9ecef',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                  }
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: '50%',
+                    bgcolor: '#66bb6a',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mr: 1.5,
+                    fontWeight: 'bold',
+                    color: 'white',
+                    fontSize: '12px'
+                  }}
+                >
+                  #3
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 600, color: '#333', mb: 0.2, fontSize: '14px' }}>
+                    Alpha Enterprises
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#666', fontSize: '11px' }}>
+                    ₦1,650,000 • 28 employees
+                  </Typography>
+                </Box>
+              </Box>
+
+              {/* Corporate Item 4 */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  p: 1.5,
+                  borderRadius: '10px',
+                  bgcolor: '#f8f9fa',
+                  border: '1px solid #e9ecef',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    bgcolor: '#e9ecef',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                  }
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: '50%',
+                    bgcolor: '#8e24aa',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mr: 1.5,
+                    fontWeight: 'bold',
+                    color: 'white',
+                    fontSize: '12px'
+                  }}
+                >
+                  #4
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 600, color: '#333', mb: 0.2, fontSize: '14px' }}>
+                    NextGen Systems
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#666', fontSize: '11px' }}>
+                    ₦1,420,000 • 22 employees
+                  </Typography>
+                </Box>
+              </Box>
+
+              {/* Corporate Item 5 */}
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  p: 1.5,
+                  borderRadius: '10px',
+                  bgcolor: '#f8f9fa',
+                  border: '1px solid #e9ecef',
+                  transition: 'all 0.2s ease',
+                  '&:hover': {
+                    bgcolor: '#e9ecef',
+                    transform: 'translateY(-1px)',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                  }
+                }}
+              >
+                <Box
+                  sx={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: '50%',
+                    bgcolor: '#42a5f5',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mr: 1.5,
+                    fontWeight: 'bold',
+                    color: 'white',
+                    fontSize: '12px'
+                  }}
+                >
+                  #5
+                </Box>
+                <Box sx={{ flex: 1 }}>
+                  <Typography variant="body2" sx={{ fontWeight: 600, color: '#333', mb: 0.2, fontSize: '14px' }}>
+                    Prime Business Group
+                  </Typography>
+                  <Typography variant="caption" sx={{ color: '#666', fontSize: '11px' }}>
+                    ₦1,180,000 • 18 employees
+                  </Typography>
+                </Box>
+              </Box>
             </Box>
           </Paper>
         </Box>
 
         {/* Chart Section */}
         <Box sx={{ flex: '1 1 70%', minWidth: '400px' }}>
-          <Paper sx={{ p: 3, borderRadius: '20px', height: '400px' }}>
+          <Paper sx={{ p: 3, borderRadius: '40px', height: '520px' }}>
             <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: '#333' }}>
               Loan Amount Over Time
             </Typography>
@@ -461,8 +658,9 @@ const Dashboard: React.FC = () => {
                 <LineChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
                   <defs>
                     <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#ff9800" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#ff9800" stopOpacity={0.1} />
+                      <stop offset="5%" stopColor="#76d8a5" stopOpacity={0.2} />
+                      <stop offset="50%" stopColor="#8cdeb3" stopOpacity={0.15} />
+                      <stop offset="95%" stopColor="#e5fff1" stopOpacity={0.1} />
                     </linearGradient>
                   </defs>
                   <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
@@ -472,15 +670,18 @@ const Dashboard: React.FC = () => {
                     formatter={(value) => [`${value}k USD`, 'Amount']}
                     labelFormatter={(label) => `Period: ${label}`}
                     contentStyle={{
-                      backgroundColor: '#fff',
-                      border: '1px solid #e0e0e0',
-                      borderRadius: '8px',
+                      backgroundColor: '#0c4829',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: 4,
                       fontSize: 12,
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                      padding: '8px 12px'
                     }}
+                    itemStyle={{ color: 'white' }}
+                    labelStyle={{ color: 'white' }}
                   />
                   <Area type="monotone" dataKey="amount" stroke="none" fill="url(#colorAmount)" />
-                  <Line type="monotone" dataKey="amount" stroke="#ff9800" strokeWidth={3} dot={{ r: 4, fill: '#ff9800', strokeWidth: 2, stroke: '#fff' }} activeDot={{ r: 6, fill: '#ff9800', strokeWidth: 2, stroke: '#fff' }} />
+                  <Line type="monotone" dataKey="amount" stroke="#0c4829" strokeWidth={2} dot={{ r: 3, fill: '#0c4829', strokeWidth: 0 }} activeDot={{ r: 5, fill: '#0c4829', strokeWidth: 0 }} />
                 </LineChart>
               </ResponsiveContainer>
             </Box>

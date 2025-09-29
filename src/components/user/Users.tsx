@@ -114,14 +114,14 @@ export default function Users() {
 
   if (error) {
     return (
-      <Box sx={{ width: '100%', bgcolor: '#fcf9f1', borderRadius: 2, p: 3 }}>
+      <Box sx={{ width: '100%', bgcolor: '#eefff3ff', borderRadius: 2, p: 3 }}>
         <Alert severity="error">Error loading users: {error.message}</Alert>
       </Box>
     );
   }
 
   return (
-    <Box sx={{ width: '100%', bgcolor: '#fcf9f1', borderRadius: 2, p: 3 }}>
+    <Box sx={{ width: '100%', bgcolor: '#eefff3ff', borderRadius: 2, p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
         <TextField
           placeholder="Search mail"
@@ -150,9 +150,9 @@ export default function Users() {
           onClick={handleAddUser}
           sx={{
             borderRadius: '8px',
-            backgroundColor: '#e07a64',
+            backgroundColor: '#0d4829',
             '&:hover': {
-              backgroundColor: '#d06954'
+              backgroundColor: '#25BD6F'
             }
           }}
         >
@@ -214,17 +214,17 @@ export default function Users() {
                         startIcon={<FaRegEdit />}
                         onClick={() => handleEditUser(user.no)}
                         sx={{
-                          color: '#e07a64',
-                          borderColor: '#e07a64',
+                          color: '#0d4829',
+                          borderColor: '#0d4829',
                           borderRadius: '10px',
                           padding: '6px 16px',
                           '&:hover': {
-                            borderColor: '#d06954',
+                            borderColor: '#25BD6F',
                             backgroundColor: 'rgba(224, 122, 100, 0.04)'
                           }
                         }}
                       >
-                        View & Edit
+                        VIEW & EDIT
                       </Button>
                     </TableCell>
                   </TableRow>
@@ -239,7 +239,7 @@ export default function Users() {
             justifyContent: 'space-between',
             alignItems: 'center',
             p: 1.5,
-            backgroundColor: '#fcf9f1',
+            backgroundColor: '#eefff3ff',
             borderBottomLeftRadius: '8px',
             borderBottomRightRadius: '8px'
           }}
@@ -264,7 +264,7 @@ export default function Users() {
                 height: '32px',
                 width: '32px',
                 padding: 0,
-                border: '1px solid #e9d9c2',
+                border: '1px solid #eefff3ff',
                 borderRadius: '4px',
                 color: '#000',
                 backgroundColor: 'transparent',
@@ -284,7 +284,7 @@ export default function Users() {
                 height: '32px',
                 width: '32px',
                 padding: 0,
-                border: '1px solid #e9d9c2',
+                border: '1px solid #eefff3ff',
                 borderRadius: '4px',
                 color: '#000',
                 backgroundColor: 'transparent',

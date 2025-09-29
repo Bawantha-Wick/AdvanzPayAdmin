@@ -1,10 +1,14 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+@import './styles/responsive.css';
 
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --primary-color: #d75c4f;
+  --primary-color: #0d4829;
+  --secondary-color: #4f7b64;
+  --tertiary-color: #96afaa;
+  --accent-color: #a5e5c4;
   --text-color: #333;
   --background-color: #ffffff;
   --input-background: #f5f5f5;

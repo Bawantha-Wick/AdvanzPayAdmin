@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { MdKeyboardArrowDown, MdKeyboardArrowRight } from 'react-icons/md';
+import { MdKeyboardArrowDown, MdKeyboardArrowRight, MdCorporateFare, MdBusiness, MdPersonAdd } from 'react-icons/md';
 import { FaRegUser } from 'react-icons/fa';
 import { BsFileEarmarkText } from 'react-icons/bs';
-import { IoHomeOutline, IoAddOutline, IoClose } from 'react-icons/io5';
+import { IoHomeOutline, IoClose } from 'react-icons/io5';
 import { RiFileListLine } from 'react-icons/ri';
-import { HiOutlineUserGroup } from 'react-icons/hi2';
 import { BiLogOut } from 'react-icons/bi';
+import { IoSettingsOutline } from 'react-icons/io5';
 import innerLogo from '../../assets/inner_logo.png';
-import { LuUserRoundPlus } from 'react-icons/lu';
 import { useAuthContext } from '../../contexts/useAuthContext';
 import ProfileIcon from '../common/ProfileIcon';
 
@@ -20,7 +19,7 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { user, logout } = useAuthContext();
-  const [expandedMenus, setExpandedMenus] = useState<string[]>(['userManagement']);
+  const [expandedMenus, setExpandedMenus] = useState<string[]>(['settings']);
 
   const toggleMenu = (menuId: string) => {
     setExpandedMenus((prev) => (prev.includes(menuId) ? prev.filter((id) => id !== menuId) : [...prev, menuId]));
@@ -70,39 +69,94 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
   const isActiveRoute = (path: string) => location.pathname === path;
 
   return (
-    <div className="w-84 lg:w-84 bg-[#DC7356] min-h-screen flex flex-col text-white relative">
+    <div className="w-84 lg:w-84 bg-[#0B4728] min-h-screen flex flex-col text-white relative">
       {/* Mobile close button */}
-      <button onClick={onClose} className="lg:hidden absolute top-4 right-4 p-2 text-white hover:bg-[#DC7356] rounded-full z-10">
+      <button onClick={onClose} className="lg:hidden absolute top-4 right-4 p-2 text-white hover:bg-[#0B4728] rounded-full z-10">
         <IoClose size={24} />
       </button>
 
-      <div className="flex justify-center py-4">
-        <img src={innerLogo} alt="AdvanzPay" className="h-15" style={{ marginTop: '1.5rem' }} />
+      <div className="flex justify-center h-22 bg-[#0D4829] items-center mt-4 mb-8">
+        <img src={innerLogo} alt="AdvanzPay" className="h-15 pt-4" style={{}} />
       </div>
 
       {/* Navigation */}
       <nav className="flex-1" style={{ marginTop: '4rem', marginLeft: '3rem' }}>
         {/* Dashboard */}
         <div style={menuItemStyles}>
-          <Link to="/app/dashboard" className="flex text-white hover:bg-[#DC7356] transition-colors">
+          <Link to="/app/dashboard" className="flex text-white hover:bg-[#0B4728] transition-colors">
             <IoHomeOutline className="text-xl" style={iconStyles} />
             <span className={isActiveRoute('/app/dashboard') ? 'font-bold' : ''}>Dashboard</span>
           </Link>
         </div>
 
-        {/* User Management */}
+        {/* Employee Management */}
         <div style={menuItemStyles}>
-          <button onClick={() => toggleMenu('userManagement')} className="w-full flex items-center justify-between text-white hover:bg-[#DC7356] transition-colors">
+          <button onClick={() => toggleMenu('employeeManagement')} className="w-full flex items-center justify-between text-white hover:bg-[#0B4728] transition-colors">
             <div className="flex items-center">
-              <FaRegUser className="text-xl" style={iconStyles} />
-              <span className={isActiveRoute('/app/users') || isActiveRoute('/app/user-roles') ? 'font-bold' : ''}>User Management</span>
+              <MdCorporateFare className="text-xl" style={iconStyles} />
+              <span className={isActiveRoute('/app/employees') || isActiveRoute('/app/employee-requests') ? 'font-bold' : ''}>Corporate Management</span>
             </div>
-            {expandedMenus.includes('userManagement') ? <MdKeyboardArrowDown className="text-xl" style={expandIconStyles} /> : <MdKeyboardArrowRight className="text-xl" style={expandIconStyles} />}
+            {expandedMenus.includes('employeeManagement') ? <MdKeyboardArrowDown className="text-xl" style={expandIconStyles} /> : <MdKeyboardArrowRight className="text-xl" style={expandIconStyles} />}
           </button>
-          {expandedMenus.includes('userManagement') && (
-            <div className="flex flex-col bg-[#DC7356]" style={subMenuStyles}>
+          {expandedMenus.includes('employeeManagement') && (
+            <div className="bg-[#0B4728]" style={subMenuStyles}>
+              <Link to="/app/employees" className="flex block py-2">
+                <MdBusiness className="text-xl" style={subMenuIconStyles} />
+                <span style={subMenuItemStyles} className={isActiveRoute('/app/employees') ? 'font-bold' : ''}>
+                  Corporate
+                </span>
+              </Link>
+              <Link to="/app/employee-requests" className="flex block py-2">
+                <MdPersonAdd className="text-xl" style={subMenuIconStyles} />
+                <span style={subMenuItemStyles} className={isActiveRoute('/app/employee-requests') ? 'font-bold' : ''}>
+                  Corporate User
+                </span>
+              </Link>
+              {/* <Link to="/app/authorize-employees" className="flex block py-2">
+                <LuUserRoundCheck className="text-xl" style={subMenuIconStyles} />
+                <span style={subMenuItemStyles}>Authorize Employees</span>
+              </Link> */}
+            </div>
+          )}
+        </div>
+
+        {/* Settlements */}
+        {/* <div style={menuItemStyles}>
+          <Link to="/app/settlements" className="flex text-white hover:bg-[#0B4728] transition-colors">
+            <BsFileEarmarkText className="text-xl" style={iconStyles} />
+            <span className={isActiveRoute('/app/settlements') ? 'font-bold' : ''}>Settlements</span>
+          </Link>
+        </div> */}
+
+        {/* Reports */}
+        {/* <div style={menuItemStyles}>
+          <Link to="/app/reports" className="flex text-white hover:bg-[#0B4728] transition-colors">
+            <BsFileEarmarkText className="text-xl" style={iconStyles} />
+            <span className={isActiveRoute('/app/reports') ? 'font-bold' : ''}>Reports</span>
+          </Link>
+        </div> */}
+
+        {/* Advanced Reports */}
+        {/* <div style={menuItemStyles}>
+          <Link to="/app/reports-coming-soon" className="flex text-white hover:bg-[#0B4728] transition-colors">
+            <RiFileListLine className="text-xl" style={iconStyles} />
+            <span className={isActiveRoute('/app/reports-coming-soon') ? 'font-bold' : ''}>Reports</span>
+          </Link>
+        </div> */}
+
+        {/* Settings */}
+        <div style={menuItemStyles}>
+          <button onClick={() => toggleMenu('settings')} className="w-full flex items-center justify-between text-white hover:bg-[#0B4728] transition-colors">
+            <div className="flex items-center">
+              <IoSettingsOutline className={'text-xl'} style={iconStyles} />
+              <span className={isActiveRoute('/app/users') || isActiveRoute('/app/user-roles') ? 'font-bold' : ''}>Admin Settings</span>
+            </div>
+            {expandedMenus.includes('settings') ? <MdKeyboardArrowDown className="text-xl" style={expandIconStyles} /> : <MdKeyboardArrowRight className="text-xl" style={expandIconStyles} />}
+          </button>
+          {expandedMenus.includes('settings') && (
+            <div className="flex flex-col bg-[#0B4728]" style={subMenuStyles}>
               <Link to="/app/users" className="flex block py-2">
-                <IoAddOutline className="text-xl" style={subMenuIconStyles} />
+                <FaRegUser className="text-xl" style={subMenuIconStyles} />
                 <span style={subMenuItemStyles} className={isActiveRoute('/app/users') ? 'font-bold' : ''}>
                   Users
                 </span>
@@ -116,63 +170,11 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
             </div>
           )}
         </div>
-
-        {/* Employee Management */}
-        <div style={menuItemStyles}>
-          <button onClick={() => toggleMenu('employeeManagement')} className="w-full flex items-center justify-between text-white hover:bg-[#DC7356] transition-colors">
-            <div className="flex items-center">
-              <HiOutlineUserGroup className="text-xl" style={iconStyles} />
-              <span className={isActiveRoute('/app/employees') || isActiveRoute('/app/employee-requests') || isActiveRoute('/app/authorize-employees') ? 'font-bold' : ''}>Corporate Management</span>
-            </div>
-            {expandedMenus.includes('employeeManagement') ? <MdKeyboardArrowDown className="text-xl" style={expandIconStyles} /> : <MdKeyboardArrowRight className="text-xl" style={expandIconStyles} />}
-          </button>
-          {expandedMenus.includes('employeeManagement') && (
-            <div className="bg-[#DC7356]" style={subMenuStyles}>
-              <Link to="/app/employees" className="flex block py-2">
-                <FaRegUser className="text-l" style={subMenuIconStyles} />
-                <span style={subMenuItemStyles} className={isActiveRoute('/app/employees') ? 'font-bold' : ''}>
-                  Corporate
-                </span>
-              </Link>
-              <Link to="/app/employee-requests" className="flex block py-2">
-                <LuUserRoundPlus className="text-xl" style={subMenuIconStyles} />
-                <span style={subMenuItemStyles} className={isActiveRoute('/app/employee-requests') ? 'font-bold' : ''}>
-                  Corporate User
-                </span>
-              </Link>
-            </div>
-          )}
-        </div>
-
-        {/* Settlements */}
-        <div style={menuItemStyles}>
-          <Link to="/app/settlements" className="flex text-white hover:bg-[#DC7356] transition-colors">
-            <BsFileEarmarkText className="text-xl" style={iconStyles} />
-            <span className={isActiveRoute('/app/settlements') ? 'font-bold' : ''}>Settlements</span>
-          </Link>
-        </div>
-
-        {/* Reports */}
-        <div style={menuItemStyles}>
-          <Link to="/app/reports" className="flex text-white hover:bg-[#DC7356] transition-colors">
-            <BsFileEarmarkText className="text-xl" style={iconStyles} />
-            <span className={isActiveRoute('/app/reports') ? 'font-bold' : ''}>Reports</span>
-          </Link>
-        </div>
-        {/* <div style={menuItemStyles}>
-          <button onClick={() => toggleMenu('reports')} className="w-full flex items-center justify-between text-white hover:bg-[#DC7356] transition-colors">
-            <div className="flex items-center">
-              <BsFileEarmarkText className="text-xl" style={iconStyles} />
-              <span>Reports</span>
-            </div>
-            {expandedMenus.includes('reports') ? <MdKeyboardArrowDown className="text-xl" style={expandIconStyles} /> : <MdKeyboardArrowRight className="text-xl" style={expandIconStyles} />}
-          </button>
-        </div> */}
       </nav>
 
       {/* User Profile */}
-      <div className="mt-auto border-t border-[#DC7356] bg-[#e08368]" style={{ marginBottom: '2rem', marginLeft: '2rem', marginRight: '2rem' }}>
-        <button onClick={() => toggleMenu('profile')} className="w-full flex justify-center hover:bg-[#DC7356] transition-colors gap-5" style={{ marginTop: '1.25rem', paddingBottom: '1.25rem' }}>
+      <div className="mt-auto border-t border-[#0D4829] bg-[#4F7B64]" style={{ marginBottom: '2rem', marginLeft: '2rem', marginRight: '2rem' }}>
+        <button onClick={() => toggleMenu('profile')} className="w-full flex justify-center hover:bg-[#0D4829] transition-colors gap-5" style={{ marginTop: '1.25rem', paddingBottom: '1.25rem' }}>
           <ProfileIcon name={user?.name || 'User'} size="md" />
           <div className="text-center">
             <div className="font-medium">{user?.name || 'User'}</div>
@@ -181,8 +183,8 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
           <MdKeyboardArrowDown className="text-xl ml-3" />
         </button>
         {expandedMenus.includes('profile') && (
-          <div className="bg-[#e08368] border-t border-[#DC7356]">
-            <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 py-3 hover:bg-[#DC7356] transition-colors text-white">
+          <div className="bg-[#4F7B64] border-t border-[#0D4829]">
+            <button onClick={handleLogout} className="w-full flex items-center justify-center gap-2 py-3 hover:bg-[#0D4829] transition-colors text-white">
               <BiLogOut className="text-xl" />
               <span>Logout</span>
             </button>
