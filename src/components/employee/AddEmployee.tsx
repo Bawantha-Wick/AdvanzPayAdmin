@@ -20,6 +20,7 @@ import CloseIcon from '@mui/icons-material/Close';
 // import type { CreateCorpEmployeeData, UpdateCorpEmployeeData } from '../../types/api';
 
 export interface EmployeeFormData {
+  id?: string;
   corporationName: string;
   payDate: string;
   name: string;

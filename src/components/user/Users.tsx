@@ -96,7 +96,7 @@ export default function Users() {
     }
   };
 
-  const handleSaveUser = (_userData: UserFormData) => {
+  const handleSaveUser = () => {
     // Close the modal
     setAddUserOpen(false);
 

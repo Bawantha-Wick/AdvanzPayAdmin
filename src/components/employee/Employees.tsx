@@ -112,19 +112,30 @@ export default function Employees() {
     // Convert CorpEmployee to EmployeeFormData
     const employeeFormData: EmployeeFormData = {
       id: employee.no.toString(),
+      corporationName: '', // Not available in CorpEmployee, use default
+      payDate: '1', // Not available in CorpEmployee, use default
       name: employee.name,
+      jobTitle: 'Manager', // Not available in CorpEmployee, use default
       email: employee.email,
       mobile: employee.mobile,
-      salary: employee.basicSalAmt,
+      salaryLimits: {
+        minimum: '10000',
+        maximum: '10000',
+        percentage: '10000',
+        capAmount: '10000'
+      },
+      ewaConfiguration: {
+        maxEwaPercentage: 51,
+        adHocTransactionFee: '5',
+        enableAutoApproval: true
+      },
+      feeStructure: {
+        manualWithdrawalFee: '3',
+        automatedWithdrawalFee: '2'
+      },
       accountStatus: employee.status === constant.status.active,
       approveStatus: employee.status === constant.status.active,
-      status: (employee.status as 'ACTV' | 'INAC' | 'BLCK') || 'ACTV',
-      bankDetails: {
-        accountName: employee.accName,
-        accountNumber: employee.accNo,
-        bankName: employee.accBank,
-        branch: employee.accBranch
-      }
+      status: (employee.status as 'ACTV' | 'INAC' | 'BLCK') || 'ACTV'
     };
     setSelectedEmployee(employeeFormData);
     setOpenEmployeeModal(true);

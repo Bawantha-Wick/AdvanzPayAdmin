@@ -37,7 +37,7 @@ interface AddUserRoleModalProps {
   roleData?: RoleData;
 }
 
-const AddUserRoleModal: React.FC<AddUserRoleModalProps> = ({ open, onClose, onSave, onDisable: _onDisable, mode = 'add', roleData }) => {
+const AddUserRoleModal: React.FC<AddUserRoleModalProps> = ({ open, onClose, onSave, mode = 'add', roleData }) => {
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
   const [accessLevels, setAccessLevels] = React.useState({
