@@ -296,7 +296,7 @@ const Dashboard: React.FC = () => {
           <Card sx={{ bgcolor: '#8cdeb3', borderRadius: '40px', position: 'relative', height: '9rem' }}>
             <CardContent>
               <Typography variant="subtitle1" sx={{ color: '#0c4829' }}>
-                Corporate
+                Corporates
               </Typography>
               <Typography variant="h3" sx={{ my: 2, fontWeight: 'bold' }}>
                 40
@@ -356,7 +356,7 @@ const Dashboard: React.FC = () => {
           <Card sx={{ bgcolor: '#8cdeb3', borderRadius: '40px', position: 'relative', height: '9rem' }}>
             <CardContent>
               <Typography variant="subtitle1" sx={{ color: '#0c4829' }}>
-                Loan requests
+                Total Requests
               </Typography>
               <Typography variant="h3" sx={{ my: 2, fontWeight: 'bold' }}>
                 40
@@ -386,7 +386,7 @@ const Dashboard: React.FC = () => {
           <Card sx={{ bgcolor: '#fff', borderRadius: '40px', position: 'relative', height: '9rem' }}>
             <CardContent>
               <Typography variant="subtitle1" sx={{ color: '#0c4829' }}>
-                Total loans
+                Total Disbursed
               </Typography>
               <Typography variant="h3" sx={{ my: 2, fontWeight: 'bold' }}>
                 0
@@ -651,7 +651,7 @@ const Dashboard: React.FC = () => {
         <Box sx={{ flex: '1 1 70%', minWidth: '400px' }}>
           <Paper sx={{ p: 3, borderRadius: '40px', height: '520px' }}>
             <Typography variant="h6" sx={{ mb: 3, fontWeight: 600, color: '#333' }}>
-              Loan Amount Over Time
+              Disbursed Amount Over Time
             </Typography>
             <Box sx={{ height: 'calc(100% - 80px)', position: 'relative' }}>
               <ResponsiveContainer width="100%" height="100%">

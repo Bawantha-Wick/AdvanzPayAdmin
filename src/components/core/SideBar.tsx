@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { MdKeyboardArrowDown, MdKeyboardArrowRight, MdCorporateFare, MdBusiness, MdPersonAdd } from 'react-icons/md';
 import { FaRegUser } from 'react-icons/fa';
-// import { BsFileEarmarkText } from 'react-icons/bs';
 import { IoHomeOutline, IoClose } from 'react-icons/io5';
 import { RiFileListLine } from 'react-icons/ri';
 import { BiLogOut } from 'react-icons/bi';
@@ -69,14 +68,14 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
   const isActiveRoute = (path: string) => location.pathname === path;
 
   return (
-    <div className="w-84 lg:w-84 bg-[#0B4728] min-h-screen flex flex-col text-white relative">
+    <div className="w-84 lg:w-84 bg-[#0B4728] h-screen flex flex-col text-white relative overflow-hidden">
       {/* Mobile close button */}
       <button onClick={onClose} className="lg:hidden absolute top-4 right-4 p-2 text-white hover:bg-[#0B4728] rounded-full z-10">
         <IoClose size={24} />
       </button>
 
-      <div className="flex justify-center h-22 bg-[#0D4829] items-center mt-4 mb-8">
-        <img src={innerLogo} alt="AdvanzPay" className="h-15 pt-4" style={{}} />
+      <div className="flex justify-center items-center flex-shrink-0 bg-white/95 rounded-lg shadow-md" style={{ marginLeft: '2rem', marginRight: '2rem', marginTop: '0.25rem', padding: '1rem' }}>
+        <img src={innerLogo} alt="AdvanzPay" className="h-12 w-auto object-contain" />
       </div>
 
       {/* Navigation */}
@@ -173,7 +172,7 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
       </nav>
 
       {/* User Profile */}
-      <div className="mt-auto border-t border-[#0D4829] bg-[#4F7B64]" style={{ marginBottom: '2rem', marginLeft: '2rem', marginRight: '2rem' }}>
+      <div className="mt-auto border-t border-[#0D4829] bg-[#4F7B64] flex-shrink-0 rounded-lg" style={{ marginBottom: '2rem', marginLeft: '2rem', marginRight: '2rem' }}>
         <button onClick={() => toggleMenu('profile')} className="w-full flex justify-center hover:bg-[#0D4829] transition-colors gap-5" style={{ marginTop: '1.25rem', paddingBottom: '1.25rem' }}>
           <ProfileIcon name={user?.name || 'User'} size="md" />
           <div className="text-center">
