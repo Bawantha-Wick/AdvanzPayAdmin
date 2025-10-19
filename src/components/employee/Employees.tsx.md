@@ -14,7 +14,6 @@ import { FaRegEdit } from 'react-icons/fa';
 import { InputAdornment, TextField, Switch } from '@mui/material';
 import { IoMdSearch } from 'react-icons/io';
 import { IoAddCircleOutline } from 'react-icons/io5';
-import { MdFileUpload } from 'react-icons/md';
 import AddEmployee, { type EmployeeFormData } from './AddEmployee';
 import { employeeService } from '../../services/employeeService';
 import type { CorpEmployee } from '../../types/api';
@@ -202,22 +201,6 @@ export default function Employees() {
 
         <Box sx={{ display: 'flex', gap: 2 }}>
           <Button
-            variant="outlined"
-            startIcon={<MdFileUpload />}
-            sx={{
-              borderRadius: '8px',
-              color: '#0d4829',
-              borderColor: '#0d4829',
-              '&:hover': {
-                borderColor: '#25BD6F',
-                backgroundColor: 'rgba(224, 122, 100, 0.04)'
-              }
-            }}
-          >
-            Upload excel sheet
-          </Button>
-
-          <Button
             variant="contained"
             startIcon={<IoAddCircleOutline />}
             onClick={handleOpenAddEmployeeModal}
@@ -229,7 +212,7 @@ export default function Employees() {
               }
             }}
           >
-            Add new employe
+            Add New Corporate
           </Button>
         </Box>
       </Box>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { MdKeyboardArrowDown, MdKeyboardArrowRight, MdCorporateFare, MdBusiness, MdPersonAdd } from 'react-icons/md';
+import { MdKeyboardArrowDown, MdKeyboardArrowRight, MdCorporateFare, MdBusiness, MdPeople } from 'react-icons/md';
 import { FaRegUser } from 'react-icons/fa';
 import { IoHomeOutline, IoClose } from 'react-icons/io5';
 import { RiFileListLine } from 'react-icons/ri';
@@ -93,55 +93,27 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
           <button onClick={() => toggleMenu('employeeManagement')} className="w-full flex items-center justify-between text-white hover:bg-[#0B4728] transition-colors">
             <div className="flex items-center">
               <MdCorporateFare className="text-xl" style={iconStyles} />
-              <span className={isActiveRoute('/app/employees') || isActiveRoute('/app/employee-requests') ? 'font-bold' : ''}>Corporate Management</span>
+              <span className={isActiveRoute('/app/corporates') || isActiveRoute('/app/employee-requests') ? 'font-bold' : ''}>Corporate Management</span>
             </div>
             {expandedMenus.includes('employeeManagement') ? <MdKeyboardArrowDown className="text-xl" style={expandIconStyles} /> : <MdKeyboardArrowRight className="text-xl" style={expandIconStyles} />}
           </button>
           {expandedMenus.includes('employeeManagement') && (
             <div className="bg-[#0B4728]" style={subMenuStyles}>
-              <Link to="/app/employees" className="flex block py-2">
+              <Link to="/app/corporates" className="flex block py-2">
                 <MdBusiness className="text-xl" style={subMenuIconStyles} />
-                <span style={subMenuItemStyles} className={isActiveRoute('/app/employees') ? 'font-bold' : ''}>
-                  Corporate
+                <span style={subMenuItemStyles} className={isActiveRoute('/app/corporates') ? 'font-bold' : ''}>
+                  Corporates
                 </span>
               </Link>
               <Link to="/app/employee-requests" className="flex block py-2">
-                <MdPersonAdd className="text-xl" style={subMenuIconStyles} />
+                <MdPeople className="text-xl" style={subMenuIconStyles} />
                 <span style={subMenuItemStyles} className={isActiveRoute('/app/employee-requests') ? 'font-bold' : ''}>
-                  Corporate User
+                  Corporate Users
                 </span>
               </Link>
-              {/* <Link to="/app/authorize-employees" className="flex block py-2">
-                <LuUserRoundCheck className="text-xl" style={subMenuIconStyles} />
-                <span style={subMenuItemStyles}>Authorize Employees</span>
-              </Link> */}
             </div>
           )}
         </div>
-
-        {/* Settlements */}
-        {/* <div style={menuItemStyles}>
-          <Link to="/app/settlements" className="flex text-white hover:bg-[#0B4728] transition-colors">
-            <BsFileEarmarkText className="text-xl" style={iconStyles} />
-            <span className={isActiveRoute('/app/settlements') ? 'font-bold' : ''}>Settlements</span>
-          </Link>
-        </div> */}
-
-        {/* Reports */}
-        {/* <div style={menuItemStyles}>
-          <Link to="/app/reports" className="flex text-white hover:bg-[#0B4728] transition-colors">
-            <BsFileEarmarkText className="text-xl" style={iconStyles} />
-            <span className={isActiveRoute('/app/reports') ? 'font-bold' : ''}>Reports</span>
-          </Link>
-        </div> */}
-
-        {/* Advanced Reports */}
-        {/* <div style={menuItemStyles}>
-          <Link to="/app/reports-coming-soon" className="flex text-white hover:bg-[#0B4728] transition-colors">
-            <RiFileListLine className="text-xl" style={iconStyles} />
-            <span className={isActiveRoute('/app/reports-coming-soon') ? 'font-bold' : ''}>Reports</span>
-          </Link>
-        </div> */}
 
         {/* Settings */}
         <div style={menuItemStyles}>

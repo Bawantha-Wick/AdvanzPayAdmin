@@ -1,8 +1,8 @@
 import api from './api';
-import type { Employee, CreateEmployeeData, CreateCorpEmployeeData, UpdateCorpEmployeeData, EmployeeRequest, UpdateRequestStatusData, PaginatedResponse, PaginationParams, Transaction, CorpEmployeesResponse, CorpEmployee } from '../types/api';
+import type { Employee, CreateEmployeeData, CreateCorpData, UpdateCorpData, EmployeeRequest, UpdateRequestStatusData, PaginatedResponse, PaginationParams, Transaction, CorporatesResponse, Corporate } from '../types/api';
 
 // Dummy data for development when API fails
-const getDummyCorpEmployees = (): CorpEmployeesResponse => ({
+const getDummyCorporates = (): CorporatesResponse => ({
   statusCode: 200,
   status: true,
   responseCode: 'SUCCESS',
@@ -12,36 +12,86 @@ const getDummyCorpEmployees = (): CorpEmployeesResponse => ({
       total: 5,
       pages: 1
     },
-    employees: [
+    corporates: [
       {
         no: 1,
-        name: 'John Doe',
+        name: 'TechCorp Solutions',
         email: 'john.doe@company.com',
         mobile: '+1234567890',
-        basicSalAmt: '50000',
-        accNo: '123456789',
-        accName: 'John Doe',
-        accBank: 'ABC Bank',
-        accBranch: 'Main Branch',
+        count: 50,
+        // accNo: '123456789',
+        // accName: 'John Doe',
+        // accBank: 'ABC Bank',
+        // accBranch: 'Main Branch',
         status: 'active',
-        statusLabel: 'Active',
-        apStatus: 'approved',
-        apStatusLabel: 'Approved'
+        statusLabel: 'Active'
+        // apStatus: 'approved',
+        // apStatusLabel: 'Approved',
+        // company: 'TechCorp Solutions'
       },
       {
         no: 2,
-        name: 'Jane Smith',
+        name: 'Global Industries Ltd',
         email: 'jane.smith@company.com',
         mobile: '+1234567891',
-        basicSalAmt: '45000',
-        accNo: '123456790',
-        accName: 'Jane Smith',
-        accBank: 'XYZ Bank',
-        accBranch: 'Central Branch',
+        count: 45,
+        // accNo: '123456790',
+        // accName: 'Jane Smith',
+        // accBank: 'XYZ Bank',
+        // accBranch: 'Central Branch',
         status: 'active',
-        statusLabel: 'Active',
-        apStatus: 'pending',
-        apStatusLabel: 'Pending'
+        statusLabel: 'Active'
+        // apStatus: 'pending',
+        // apStatusLabel: 'Pending',
+        // company: 'Global Industries Ltd'
+      },
+      {
+        no: 3,
+        name: 'Alpha Enterprises',
+        email: 'mike.johnson@company.com',
+        mobile: '+1234567892',
+        count: 55,
+        // accNo: '123456791',
+        // accName: 'Mike Johnson',
+        // accBank: 'DEF Bank',
+        // accBranch: 'Downtown Branch',
+        status: 'active',
+        statusLabel: 'Active'
+        // apStatus: 'approved',
+        // apStatusLabel: 'Approved',
+        // company: 'Alpha Enterprises'
+      },
+      {
+        no: 4,
+        name: 'NextGen Systems',
+        email: 'sarah.wilson@company.com',
+        mobile: '+1234567893',
+        count: 48,
+        // accNo: '123456792',
+        // accName: 'Sarah Wilson',
+        // accBank: 'GHI Bank',
+        // accBranch: 'North Branch',
+        status: 'active',
+        statusLabel: 'Active'
+        // apStatus: 'pending',
+        // apStatusLabel: 'Pending',
+        // company: 'NextGen Systems'
+      },
+      {
+        no: 5,
+        name: 'Prime Business Group',
+        email: 'david.brown@company.com',
+        mobile: '+1234567894',
+        count: 52,
+        // accNo: '123456793',
+        // accName: 'David Brown',
+        // accBank: 'JKL Bank',
+        // accBranch: 'South Branch',
+        status: 'active',
+        statusLabel: 'Active'
+        // apStatus: 'approved',
+        // apStatusLabel: 'Approved',
+        // company: 'Prime Business Group'
       }
     ]
   }
@@ -79,17 +129,17 @@ const getDummyEmployeeRequests = (): PaginatedResponse<EmployeeRequest> => ({
   }
 });
 
-export const employeeService = {
+export const corporateService = {
   // Get corporate employees with pagination and search (new API)
-  getCorpEmployees: async (page: number = 1, search: string = ''): Promise<CorpEmployeesResponse> => {
+  getCorps: async (page: number = 1, search: string = ''): Promise<CorporatesResponse> => {
     try {
-      const response = await api.get('/corp-emp', {
+      const response = await api.get('/corp', {
         params: { page, search }
       });
       return response.data;
     } catch (error) {
       console.warn('Get corporate employees API failed, using dummy data for development:', error);
-      return getDummyCorpEmployees();
+      return getDummyCorporates();
     }
   },
 
@@ -112,7 +162,7 @@ export const employeeService = {
   },
 
   // Create new corporate employee
-  createCorpEmployee: async (employee: CreateCorpEmployeeData): Promise<CorpEmployee> => {
+  createCorpEmployee: async (employee: CreateCorpData): Promise<Corporate> => {
     try {
       const response = await api.post('/corp-emp', employee);
       return response.data;
@@ -123,21 +173,21 @@ export const employeeService = {
         name: employee.name,
         email: employee.email,
         mobile: employee.mobile,
-        basicSalAmt: employee.basicSalAmt.toString(),
-        accNo: employee.accNo,
-        accName: employee.accName,
-        accBank: employee.accBank,
-        accBranch: employee.accBranch,
+        count: employee.count,
+        // accNo: employee.accNo,
+        // accName: employee.accName,
+        // accBank: employee.accBank,
+        // accBranch: employee.accBranch,
         status: 'active',
-        statusLabel: 'Active',
-        apStatus: 'pending',
-        apStatusLabel: 'Pending'
+        statusLabel: 'Active'
+        // apStatus: 'pending',
+        // apStatusLabel: 'Pending'
       };
     }
   },
 
   // Update corporate employee
-  updateCorpEmployee: async (employee: UpdateCorpEmployeeData): Promise<CorpEmployee> => {
+  updateCorpEmployee: async (employee: UpdateCorpData): Promise<Corporate> => {
     try {
       const response = await api.put('/corp-emp', employee);
       return response.data;
@@ -148,15 +198,15 @@ export const employeeService = {
         name: employee.name,
         email: employee.email,
         mobile: employee.mobile,
-        basicSalAmt: employee.basicSalAmt.toString(),
-        accNo: employee.accNo,
-        accName: employee.accName,
-        accBank: employee.accBank,
-        accBranch: employee.accBranch,
+        count: employee.count,
+        // accNo: employee.accNo,
+        // accName: employee.accName,
+        // accBank: employee.accBank,
+        // accBranch: employee.accBranch,
         status: employee.status,
-        statusLabel: employee.status === 'active' ? 'Active' : 'Inactive',
-        apStatus: 'approved',
-        apStatusLabel: 'Approved'
+        statusLabel: employee.status === 'active' ? 'Active' : 'Inactive'
+        // apStatus: 'approved',
+        // apStatusLabel: 'Approved'
       };
     }
   },
@@ -212,7 +262,7 @@ export const employeeService = {
 
   // Approve request
   approveRequest: async (requestId: string, processedBy: string, remark?: string): Promise<EmployeeRequest> => {
-    return employeeService.updateRequestStatus(requestId, {
+    return corporateService.updateRequestStatus(requestId, {
       processStatus: 'Approved',
       processedBy,
       remark
@@ -221,7 +271,7 @@ export const employeeService = {
 
   // Reject request
   rejectRequest: async (requestId: string, processedBy: string, remark?: string): Promise<EmployeeRequest> => {
-    return employeeService.updateRequestStatus(requestId, {
+    return corporateService.updateRequestStatus(requestId, {
       processStatus: 'Rejected',
       processedBy,
       remark

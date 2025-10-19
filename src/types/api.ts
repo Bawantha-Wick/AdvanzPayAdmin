@@ -12,23 +12,23 @@ export interface Employee {
 }
 
 // Corporate Employee interfaces for the new API
-export interface CorpEmployee {
+export interface Corporate {
   no: number;
   name: string;
   email: string;
   mobile: string;
-  basicSalAmt: string;
-  accNo: string;
-  accName: string;
-  accBank: string;
-  accBranch: string;
+  count: number;
+  // accNo: string;
+  // accName: string;
+  // accBank: string;
+  // accBranch: string;
   status: string;
   statusLabel: string;
-  apStatus: string;
-  apStatusLabel: string;
+  // apStatus: string;
+  // apStatusLabel: string;
 }
 
-export interface CorpEmployeesResponse {
+export interface CorporatesResponse {
   statusCode: number;
   status: boolean;
   responseCode: string;
@@ -38,7 +38,7 @@ export interface CorpEmployeesResponse {
       total: number;
       pages: number;
     };
-    employees: CorpEmployee[];
+    corporates: Corporate[];
   };
 }
 
@@ -50,11 +50,11 @@ export interface CreateEmployeeData {
 }
 
 // Corporate Employee creation data
-export interface CreateCorpEmployeeData {
+export interface CreateCorpData {
   name: string;
   email: string;
   mobile: string;
-  basicSalAmt: number;
+  count: number;
   accNo: string;
   accName: string;
   accBank: string;
@@ -62,10 +62,11 @@ export interface CreateCorpEmployeeData {
 }
 
 // Corporate Employee update data
-export interface UpdateCorpEmployeeData {
+export interface UpdateCorpData {
   no: number;
   name: string;
   email: string;
+  count: number;
   password?: string;
   mobile: string;
   basicSalAmt: number;

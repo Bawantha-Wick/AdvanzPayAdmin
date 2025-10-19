@@ -10,7 +10,7 @@ import Layout from './components/core/Layout';
 import Dashboard from './components/dashboard/Dashboard';
 import Users from './components/user/Users';
 import UserRoles from './components/user/UserRoles';
-import Employees from './components/employee/Employees';
+import Corporates from './components/corporate/Corporates';
 import EmployeeRequests from './components/employee/EmployeeRequests';
 import AuthorizeEmployees from './components/legacy/AuthorizeEmployees.legacy';
 import Settlements from './components/settlement/Settlements';
@@ -36,8 +36,8 @@ function App() {
             {/* User Management routes */}
             <Route path="users" element={<Users />} />
             <Route path="user-roles" element={<UserRoles />} />
-            {/* Employee Management routes */}
-            <Route path="employees" element={<Employees />} />
+            {/* Corporate Management routes */}
+            <Route path="corporates" element={<Corporates />} />
             <Route path="employee-requests" element={<EmployeeRequests />} />
             <Route path="authorize-employees" element={<AuthorizeEmployees />} />
             <Route path="settlements" element={<Settlements />} />

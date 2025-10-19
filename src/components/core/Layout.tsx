@@ -13,12 +13,10 @@ const Layout: React.FC = () => {
     // Map routes to their corresponding titles
     const titles: Record<string, string> = {
       dashboard: 'Dashboard',
-      users: 'User Management',
-      'user-roles': 'User Roles',
-      employees: 'Corporate',
-      'employee-requests': 'Corporate Management',
-      'authorize-employees': 'Authorize Employees',
-      settlements: 'Settlements'
+      corporates: 'Corporates',
+      'corporate-users': 'Corporate Users',
+      users: 'Users',
+      'user-roles': 'User Roles'
     };
 
     return titles[path] || 'Dashboard';
