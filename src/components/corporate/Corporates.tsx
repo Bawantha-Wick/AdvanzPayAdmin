@@ -112,6 +112,8 @@ export default function Corporates() {
     const AddCorporateData: AddCorporateData = {
       id: employee.no.toString(),
       corporationName: '', // Not available in Corporate, use default
+      registeredAddress: '', // Not available in Corporate, use default
+      registrationId: '', // Not available in Corporate, use default
       payDate: '1', // Not available in Corporate, use default
       name: employee.name,
       jobTitle: 'Manager', // Not available in Corporate, use default

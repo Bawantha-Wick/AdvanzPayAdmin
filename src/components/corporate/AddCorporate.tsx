@@ -22,6 +22,8 @@ import CloseIcon from '@mui/icons-material/Close';
 export interface AddCorporateData {
   id?: string;
   corporationName: string;
+  registeredAddress: string;
+  registrationId: string;
   payDate: string;
   name: string;
   jobTitle: string;
@@ -58,6 +60,8 @@ interface AddCorporateProps {
 const AddCorporate: React.FC<AddCorporateProps> = ({ open, onClose, onSave, mode = 'add', employeeData: initialEmployeeData }) => {
   const [employeeData, setEmployeeData] = React.useState<AddCorporateData>({
     corporationName: '',
+    registeredAddress: '',
+    registrationId: '',
     payDate: '1',
     name: '',
     jobTitle: 'Manager',
@@ -86,6 +90,8 @@ const AddCorporate: React.FC<AddCorporateProps> = ({ open, onClose, onSave, mode
   const [loading, setLoading] = React.useState<boolean>(false);
   const [error, setError] = React.useState<string>('');
   const [isFormDisabled, setIsFormDisabled] = React.useState<boolean>(false);
+  const [isFixedTransactionFeeEnabled, setIsFixedTransactionFeeEnabled] = React.useState<boolean>(true);
+  const [isFixedPercentageFeeEnabled, setIsFixedPercentageFeeEnabled] = React.useState<boolean>(true);
 
   // Initialize form with employee data when in edit mode
   React.useEffect(() => {
@@ -121,6 +127,8 @@ const AddCorporate: React.FC<AddCorporateProps> = ({ open, onClose, onSave, mode
       // Reset form for add mode
       setEmployeeData({
         corporationName: '',
+        registeredAddress: '',
+        registrationId: '',
         payDate: '1',
         name: '',
         jobTitle: 'Manager',
@@ -230,17 +238,17 @@ const AddCorporate: React.FC<AddCorporateProps> = ({ open, onClose, onSave, mode
       setError('');
 
       // Basic validation
-      if (!employeeData.corporationName || !employeeData.name || !employeeData.email || !employeeData.mobile) {
-        setError('Please fill in all required fields');
-        setLoading(false);
-        return;
-      }
+      // if (!employeeData.corporationName || !employeeData.name || !employeeData.email || !employeeData.mobile) {
+      //   setError('Please fill in all required fields');
+      //   setLoading(false);
+      //   return;
+      // }
 
-      if (!employeeData.salaryLimits.minimum || !employeeData.salaryLimits.maximum || !employeeData.salaryLimits.percentage || !employeeData.salaryLimits.capAmount) {
-        setError('Please fill in all salary limit details');
-        setLoading(false);
-        return;
-      }
+      // if (!employeeData.salaryLimits.minimum || !employeeData.salaryLimits.maximum || !employeeData.salaryLimits.percentage || !employeeData.salaryLimits.capAmount) {
+      //   setError('Please fill in all salary limit details');
+      //   setLoading(false);
+      //   return;
+      // }
 
       if (mode === 'add') {
         // Map form data to API format for creation
@@ -296,16 +304,18 @@ const AddCorporate: React.FC<AddCorporateProps> = ({ open, onClose, onSave, mode
         }
       }}
     >
-      <DialogTitle sx={{ p: 0, mb: 3 }}>
-        <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h6" fontWeight="medium">
-            {mode === 'add' ? 'Add new Corporate' : 'Edit Corporate'}
-          </Typography>
-          <IconButton onClick={onClose} size="small">
-            <CloseIcon />
-          </IconButton>
-        </Box>
-      </DialogTitle>
+      {currentView !== 'configuration' && (
+        <DialogTitle sx={{ p: 0, mb: 3 }}>
+          <Box display="flex" justifyContent="space-between" alignItems="center">
+            <Typography variant="h6" fontWeight="medium">
+              {mode === 'add' ? 'Add New Corporate' : 'Edit Corporate'}
+            </Typography>
+            <IconButton onClick={onClose} size="small">
+              <CloseIcon />
+            </IconButton>
+          </Box>
+        </DialogTitle>
+      )}
 
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>
@@ -313,7 +323,7 @@ const AddCorporate: React.FC<AddCorporateProps> = ({ open, onClose, onSave, mode
         </Alert>
       )}
 
-      <DialogContent sx={{ p: 0, minHeight: '65vh', position: 'relative', bgcolor: '' }}>
+      <DialogContent sx={{ p: 0, minHeight: currentView !== 'configuration' ? '65vh' : '35vh', position: 'relative', bgcolor: '' }}>
         <Box component="form" noValidate sx={{ mt: 1 }}>
           {/* Main Form View */}
           <Collapse in={currentView === 'main'} timeout={300}>
@@ -322,11 +332,11 @@ const AddCorporate: React.FC<AddCorporateProps> = ({ open, onClose, onSave, mode
               <Grid container spacing={3} mb={3}>
                 <Grid size={6}>
                   <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
-                    Corporation name
+                    Business Name
                   </Typography>
                   <TextField
                     fullWidth
-                    placeholder="Enter name"
+                    placeholder="Enter Name"
                     value={employeeData.corporationName}
                     onChange={(e) => handleChange('corporationName', e.target.value)}
                     disabled={isFormDisabled}
@@ -350,7 +360,66 @@ const AddCorporate: React.FC<AddCorporateProps> = ({ open, onClose, onSave, mode
                 </Grid>
                 <Grid size={6}>
                   <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
-                    Pay date
+                    Registered Address
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    placeholder="Enter Address"
+                    value={employeeData.registeredAddress}
+                    onChange={(e) => handleChange('registeredAddress', e.target.value)}
+                    disabled={isFormDisabled}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '8px',
+                        height: '48px',
+                        fontSize: '14px',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        }
+                      }
+                    }}
+                  />
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={3} mb={3}>
+                <Grid size={6}>
+                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
+                    Registration ID
+                  </Typography>
+                  <TextField
+                    fullWidth
+                    placeholder="Enter Registration ID"
+                    value={employeeData.registrationId}
+                    onChange={(e) => handleChange('registrationId', e.target.value)}
+                    disabled={isFormDisabled}
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        borderRadius: '8px',
+                        height: '48px',
+                        fontSize: '14px',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&:hover .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        },
+                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                          borderColor: '#e0e0e0'
+                        }
+                      }
+                    }}
+                  />
+                </Grid>
+                <Grid size={6}>
+                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
+                    Pay Day
                   </Typography>
                   <TextField
                     fullWidth
@@ -399,7 +468,7 @@ const AddCorporate: React.FC<AddCorporateProps> = ({ open, onClose, onSave, mode
                   </Typography>
                   <TextField
                     fullWidth
-                    placeholder="Enter name"
+                    placeholder="Enter Name"
                     value={employeeData.name}
                     onChange={(e) => handleChange('name', e.target.value)}
                     disabled={isFormDisabled}
@@ -458,7 +527,7 @@ const AddCorporate: React.FC<AddCorporateProps> = ({ open, onClose, onSave, mode
                   </Typography>
                   <TextField
                     fullWidth
-                    placeholder="Enter email"
+                    placeholder="Enter Email"
                     type="email"
                     value={employeeData.email}
                     onChange={(e) => handleChange('email', e.target.value)}
@@ -483,11 +552,11 @@ const AddCorporate: React.FC<AddCorporateProps> = ({ open, onClose, onSave, mode
                 </Grid>
                 <Grid size={6}>
                   <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
-                    Mobile number
+                    Mobile Number
                   </Typography>
                   <TextField
                     fullWidth
-                    placeholder="Enter mobile number"
+                    placeholder="Enter Mobile Number"
                     value={employeeData.mobile}
                     onChange={(e) => handleChange('mobile', e.target.value)}
                     disabled={isFormDisabled}
@@ -511,40 +580,12 @@ const AddCorporate: React.FC<AddCorporateProps> = ({ open, onClose, onSave, mode
                 </Grid>
               </Grid>
 
-              {/* Salary advanced limits Section */}
+              {/* Earned Wage Limits Section */}
               <Typography variant="h6" color="#333" fontWeight="medium" mb={2}>
-                Salary advanced limits (LKR)
+                Earned Wage Limits
               </Typography>
 
               <Grid container spacing={3} mb={3}>
-                <Grid size={6}>
-                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
-                    Minimum
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    placeholder="10000"
-                    value={employeeData.salaryLimits.minimum}
-                    onChange={(e) => handleSalaryLimitsChange('minimum', e.target.value)}
-                    disabled={isFormDisabled}
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '8px',
-                        height: '48px',
-                        fontSize: '14px',
-                        '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
-                        },
-                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
-                        }
-                      }
-                    }}
-                  />
-                </Grid>
                 <Grid size={6}>
                   <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
                     Maximum
@@ -554,65 +595,6 @@ const AddCorporate: React.FC<AddCorporateProps> = ({ open, onClose, onSave, mode
                     placeholder="10000"
                     value={employeeData.salaryLimits.maximum}
                     onChange={(e) => handleSalaryLimitsChange('maximum', e.target.value)}
-                    disabled={isFormDisabled}
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '8px',
-                        height: '48px',
-                        fontSize: '14px',
-                        '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
-                        },
-                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
-                        }
-                      }
-                    }}
-                  />
-                </Grid>
-              </Grid>
-
-              <Grid container spacing={3} mb={4}>
-                <Grid size={6}>
-                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
-                    Percentage
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    placeholder="10000"
-                    value={employeeData.salaryLimits.percentage}
-                    onChange={(e) => handleSalaryLimitsChange('percentage', e.target.value)}
-                    disabled={isFormDisabled}
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '8px',
-                        height: '48px',
-                        fontSize: '14px',
-                        '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
-                        },
-                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
-                        }
-                      }
-                    }}
-                  />
-                </Grid>
-                <Grid size={6}>
-                  <Typography variant="subtitle2" color="#606060" fontWeight="medium" mb={1}>
-                    CAP amount
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    placeholder="10000"
-                    value={employeeData.salaryLimits.capAmount}
-                    onChange={(e) => handleSalaryLimitsChange('capAmount', e.target.value)}
                     disabled={isFormDisabled}
                     sx={{
                       '& .MuiOutlinedInput-root': {
@@ -720,35 +702,101 @@ const AddCorporate: React.FC<AddCorporateProps> = ({ open, onClose, onSave, mode
                 />
               </Box>
 
+              {/* Fee Structure */}
+              <Typography variant="h6" color="#0c4829" fontWeight="medium" mb={3} mt={4}>
+                Fee Structure
+              </Typography>
+
               <Grid container spacing={3} mb={3}>
                 <Grid size={6}>
                   <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
-                    Ad-hoc Transaction Fixed Fee ($)
+                    Fixed Transaction Fee ($)
                   </Typography>
-                  <TextField
-                    fullWidth
-                    placeholder="5"
-                    value={employeeData.ewaConfiguration.adHocTransactionFee}
-                    onChange={(e) => handleEwaConfigurationChange('adHocTransactionFee', e.target.value)}
-                    disabled={isFormDisabled}
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '8px',
-                        height: '48px',
-                        fontSize: '14px',
-                        '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
-                        },
-                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
+                  <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                    <TextField
+                      fullWidth
+                      placeholder="5"
+                      value={employeeData.ewaConfiguration.adHocTransactionFee}
+                      onChange={(e) => handleEwaConfigurationChange('adHocTransactionFee', e.target.value)}
+                      disabled={isFormDisabled || !isFixedTransactionFeeEnabled}
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: '8px',
+                          height: '48px',
+                          fontSize: '14px',
+                          '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#e0e0e0'
+                          },
+                          '&:hover .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#e0e0e0'
+                          },
+                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#e0e0e0'
+                          }
                         }
-                      }
-                    }}
-                  />
+                      }}
+                    />
+                    <Switch
+                      checked={isFixedTransactionFeeEnabled}
+                      onChange={(e) => setIsFixedTransactionFeeEnabled(e.target.checked)}
+                      disabled={isFormDisabled}
+                      sx={{
+                        '& .MuiSwitch-switchBase.Mui-checked': {
+                          color: '#278b56ff'
+                        },
+                        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                          backgroundColor: '#278b56ff'
+                        }
+                      }}
+                    />
+                  </Box>
                 </Grid>
+                <Grid size={6}>
+                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
+                    Fixed Percentage Fee (%)
+                  </Typography>
+                  <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
+                    <TextField
+                      fullWidth
+                      placeholder="3"
+                      value={employeeData.feeStructure.manualWithdrawalFee}
+                      onChange={(e) => handleFeeStructureChange('manualWithdrawalFee', e.target.value)}
+                      disabled={isFormDisabled || !isFixedPercentageFeeEnabled}
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: '8px',
+                          height: '48px',
+                          fontSize: '14px',
+                          '& .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#e0e0e0'
+                          },
+                          '&:hover .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#e0e0e0'
+                          },
+                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: '#e0e0e0'
+                          }
+                        }
+                      }}
+                    />
+                    <Switch
+                      checked={isFixedPercentageFeeEnabled}
+                      onChange={(e) => setIsFixedPercentageFeeEnabled(e.target.checked)}
+                      disabled={isFormDisabled}
+                      sx={{
+                        '& .MuiSwitch-switchBase.Mui-checked': {
+                          color: '#278b56ff'
+                        },
+                        '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                          backgroundColor: '#278b56ff'
+                        }
+                      }}
+                    />
+                  </Box>
+                </Grid>
+              </Grid>
+
+              <Grid container spacing={3} mb={3}>
                 <Grid size={6}>
                   <Box sx={{ display: 'flex', alignItems: 'center', height: '100%', pt: 3 }}>
                     <FormControlLabel
@@ -774,70 +822,6 @@ const AddCorporate: React.FC<AddCorporateProps> = ({ open, onClose, onSave, mode
                       }
                     />
                   </Box>
-                </Grid>
-              </Grid>
-
-              {/* Fee Structure */}
-              <Typography variant="h6" color="#0c4829" fontWeight="medium" mb={3} mt={4}>
-                Fee Structure
-              </Typography>
-
-              <Grid container spacing={3} mb={3}>
-                <Grid size={6}>
-                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
-                    Manual/Ad-hoc Withdrawal Fee (%)
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    placeholder="3"
-                    value={employeeData.feeStructure.manualWithdrawalFee}
-                    onChange={(e) => handleFeeStructureChange('manualWithdrawalFee', e.target.value)}
-                    disabled={isFormDisabled}
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '8px',
-                        height: '48px',
-                        fontSize: '14px',
-                        '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
-                        },
-                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
-                        }
-                      }
-                    }}
-                  />
-                </Grid>
-                <Grid size={6}>
-                  <Typography variant="subtitle2" color="#666" fontWeight="medium" mb={1}>
-                    Automated Withdrawal Fee (%)
-                  </Typography>
-                  <TextField
-                    fullWidth
-                    placeholder="2"
-                    value={employeeData.feeStructure.automatedWithdrawalFee}
-                    onChange={(e) => handleFeeStructureChange('automatedWithdrawalFee', e.target.value)}
-                    disabled={isFormDisabled}
-                    sx={{
-                      '& .MuiOutlinedInput-root': {
-                        borderRadius: '8px',
-                        height: '48px',
-                        fontSize: '14px',
-                        '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
-                        },
-                        '&:hover .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
-                        },
-                        '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                          borderColor: '#e0e0e0'
-                        }
-                      }
-                    }}
-                  />
                 </Grid>
               </Grid>
 
@@ -886,7 +870,7 @@ const AddCorporate: React.FC<AddCorporateProps> = ({ open, onClose, onSave, mode
                     }
                   }}
                 >
-                  {loading ? 'Saving Configuration...' : 'Save Configuration'}
+                  {loading ? 'Saving Configuration...' : mode === 'add' ? 'Save Configuration' : 'Update Configuration'}
                 </Button>
               </Box>
             </Box>
