@@ -87,8 +87,8 @@ const getDummyCorporates = (): CorporatesResponse => ({
         // accName: 'David Brown',
         // accBank: 'JKL Bank',
         // accBranch: 'South Branch',
-        status: 'active',
-        statusLabel: 'Active'
+        status: 'inactive',
+        statusLabel: 'Inactive'
         // apStatus: 'approved',
         // apStatusLabel: 'Approved',
         // company: 'Prime Business Group'

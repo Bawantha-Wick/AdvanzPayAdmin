@@ -105,9 +105,9 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
                   Corporates
                 </span>
               </Link>
-              <Link to="/app/employee-requests" className="flex block py-2">
+              <Link to="/app/corporate-users" className="flex block py-2">
                 <MdPeople className="text-xl" style={subMenuIconStyles} />
-                <span style={subMenuItemStyles} className={isActiveRoute('/app/employee-requests') ? 'font-bold' : ''}>
+                <span style={subMenuItemStyles} className={isActiveRoute('/app/corporate-users') ? 'font-bold' : ''}>
                   Corporate Users
                 </span>
               </Link>

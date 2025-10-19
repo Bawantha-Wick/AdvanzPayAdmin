@@ -38,7 +38,7 @@ function App() {
             <Route path="user-roles" element={<UserRoles />} />
             {/* Corporate Management routes */}
             <Route path="corporates" element={<Corporates />} />
-            <Route path="employee-requests" element={<EmployeeRequests />} />
+            <Route path="corporate-users" element={<EmployeeRequests />} />
             <Route path="authorize-employees" element={<AuthorizeEmployees />} />
             <Route path="settlements" element={<Settlements />} />
             <Route path="reports" element={<Reports />} />

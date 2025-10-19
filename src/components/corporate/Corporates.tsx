@@ -156,7 +156,7 @@ export default function Corporates() {
   const handleStatusToggle = async (employeeId: number, currentStatus: string) => {
     try {
       // Update the employee status optimistically
-      setEmployees((prev) => prev.map((emp) => (emp.no === employeeId ? { ...emp, status: currentStatus === 'ACTV' ? 'INAC' : 'ACTV' } : emp)));
+      setEmployees((prev) => prev.map((emp) => (emp.no === employeeId ? { ...emp, status: currentStatus === 'active' ? 'inactive' : 'active' } : emp)));
 
       // TODO: Add API call to update employee status
       // await corporateService.updateEmployeeStatus(employeeId, newStatus);
@@ -245,7 +245,7 @@ export default function Corporates() {
                     </TableCell>
                     <TableCell>
                       <Switch
-                        checked={employee.status === 'ACTV'}
+                        checked={employee.status === 'active'}
                         onChange={() => handleStatusToggle(employee.no, employee.status)}
                         color="success"
                         sx={{
