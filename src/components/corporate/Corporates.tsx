@@ -250,10 +250,10 @@ export default function Corporates() {
                         color="success"
                         sx={{
                           '& .MuiSwitch-switchBase.Mui-checked': {
-                            color: '#2e7d35'
+                            color: '#278b56ff'
                           },
                           '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-                            backgroundColor: '#d1f5d3'
+                            backgroundColor: '#278b56ff'
                           }
                         }}
                       />

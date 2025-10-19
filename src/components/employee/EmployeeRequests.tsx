@@ -26,7 +26,6 @@ const columns: readonly Column[] = [
   { id: 'name', label: 'NAME', minWidth: 200 },
   { id: 'email', label: 'EMAIL', minWidth: 200 },
   { id: 'blockStatus', label: 'BLOCK STATUS', minWidth: 150 },
-  { id: 'accountStatus', label: 'ACCOUNT STATUS', minWidth: 150 },
   { id: 'action', label: 'ACTION', minWidth: 150 }
 ];
 
@@ -34,26 +33,17 @@ interface CorporateUser {
   name: string;
   email: string;
   blockStatus: 'Active' | 'Inactive';
-  accountStatus: 'Yes' | 'No';
 }
 
-function createData(name: string, email: string, blockStatus: 'Active' | 'Inactive', accountStatus: 'Yes' | 'No'): CorporateUser {
+function createData(name: string, email: string, blockStatus: 'Active' | 'Inactive'): CorporateUser {
   return {
     name,
     email,
-    blockStatus,
-    accountStatus
+    blockStatus
   };
 }
 
-const initialRows = [
-  createData('Christine Brooks', 'dummy@gmail.com', 'Active', 'No'),
-  createData('Rosie Pearson', 'rosie@gmail.com', 'Inactive', 'Yes'),
-  createData('Darrell Caldwell', 'darrell@gmail.com', 'Active', 'No'),
-  createData('Gilbert Johnston', 'gilbert@gmail.com', 'Active', 'No'),
-  createData('Alan Cain', 'alan@gmail.com', 'Active', 'No'),
-  createData('Alfred Murray', 'alfred@gmail.com', 'Active', 'No')
-];
+const initialRows = [createData('Christine Brooks', 'dummy@gmail.com', 'Active'), createData('Rosie Pearson', 'rosie@gmail.com', 'Inactive'), createData('Darrell Caldwell', 'darrell@gmail.com', 'Active'), createData('Gilbert Johnston', 'gilbert@gmail.com', 'Active'), createData('Alan Cain', 'alan@gmail.com', 'Active'), createData('Alfred Murray', 'alfred@gmail.com', 'Active')];
 
 export default function EmployeeRequests() {
   const [rows, setRows] = React.useState<CorporateUser[]>(initialRows);
@@ -73,7 +63,7 @@ export default function EmployeeRequests() {
     return rows.filter((row) => {
       const matchesSearch = searchTerm === '' || Object.values(row).some((value) => String(value).toLowerCase().includes(searchTerm.toLowerCase()));
 
-      const matchesFilter = filterStatus === 'All' || (filterStatus === 'Active' && row.blockStatus === 'Active') || (filterStatus === 'Inactive' && row.blockStatus === 'Inactive') || (filterStatus === 'Account Yes' && row.accountStatus === 'Yes') || (filterStatus === 'Account No' && row.accountStatus === 'No');
+      const matchesFilter = filterStatus === 'All' || (filterStatus === 'Active' && row.blockStatus === 'Active') || (filterStatus === 'Inactive' && row.blockStatus === 'Inactive') || filterStatus === 'Account Yes' || filterStatus === 'Account No';
 
       return matchesSearch && matchesFilter;
     });
@@ -92,8 +82,7 @@ export default function EmployeeRequests() {
       jobTitle: 'Job title', // Default job title since it's not in the table data
       email: user.email,
       mobile: '0789652805', // Default mobile number as shown in screenshot
-      accountStatus: user.blockStatus, // blockStatus from table becomes accountStatus in modal
-      blockStatus: user.accountStatus === 'Yes' ? 'Yes' : 'No' // accountStatus from table becomes blockStatus in modal
+      blockStatus: user.blockStatus === 'Active' ? 'Yes' : 'No' // accountStatus from table becomes blockStatus in modal
     });
     setOpenModal(true);
   };
@@ -124,19 +113,8 @@ export default function EmployeeRequests() {
     });
   };
 
-  const handleToggleAccountStatus = (index: number) => {
-    setRows((prevRows) => {
-      const newRows = [...prevRows];
-      newRows[index] = {
-        ...newRows[index],
-        accountStatus: newRows[index].accountStatus === 'Yes' ? 'No' : 'Yes'
-      };
-      return newRows;
-    });
-  };
-
   return (
-    <Box sx={{ width: '100%', bgcolor: '#e5fff1ff', borderRadius: 2, p: 3 }}>
+    <Box sx={{ width: '100%', bgcolor: '#eefff3ff', borderRadius: 2, p: 3 }}>
       <Box
         sx={{
           display: 'flex',
@@ -188,12 +166,12 @@ export default function EmployeeRequests() {
             sx={{
               borderRadius: '20px',
               px: 2,
-              backgroundColor: filterStatus === 'All' ? '#20bf6c' : 'transparent',
+              backgroundColor: filterStatus === 'All' ? '#0d4829' : 'transparent',
               color: filterStatus === 'All' ? 'white' : 'black',
               borderColor: '#eefff3ff',
               '&:hover': {
-                backgroundColor: filterStatus === 'All' ? '#0d4829' : 'rgba(0, 0, 0, 0.04)',
-                borderColor: filterStatus === 'All' ? '#0d4829' : '#eefff3ff'
+                backgroundColor: filterStatus === 'All' ? '#25BD6F' : 'rgba(0, 0, 0, 0.04)',
+                borderColor: filterStatus === 'All' ? '#25BD6F' : '#eefff3ff'
               }
             }}
           >
@@ -205,12 +183,12 @@ export default function EmployeeRequests() {
             sx={{
               borderRadius: '20px',
               px: 2,
-              backgroundColor: filterStatus === 'Active' ? '#20bf6c' : 'transparent',
+              backgroundColor: filterStatus === 'Active' ? '#0d4829' : 'transparent',
               color: filterStatus === 'Active' ? 'white' : 'black',
               borderColor: '#eefff3ff',
               '&:hover': {
-                backgroundColor: filterStatus === 'Active' ? '#0d4829' : 'rgba(0, 0, 0, 0.04)',
-                borderColor: filterStatus === 'Active' ? '#0d4829' : '#eefff3ff'
+                backgroundColor: filterStatus === 'Active' ? '#25BD6F' : 'rgba(0, 0, 0, 0.04)',
+                borderColor: filterStatus === 'Active' ? '#25BD6F' : '#eefff3ff'
               }
             }}
           >
@@ -222,12 +200,12 @@ export default function EmployeeRequests() {
             sx={{
               borderRadius: '20px',
               px: 2,
-              backgroundColor: filterStatus === 'Inactive' ? '#20bf6c' : 'transparent',
+              backgroundColor: filterStatus === 'Inactive' ? '#0d4829' : 'transparent',
               color: filterStatus === 'Inactive' ? 'white' : 'black',
               borderColor: '#eefff3ff',
               '&:hover': {
-                backgroundColor: filterStatus === 'Inactive' ? '#0d4829' : 'rgba(0, 0, 0, 0.04)',
-                borderColor: filterStatus === 'Inactive' ? '#0d4829' : '#eefff3ff'
+                backgroundColor: filterStatus === 'Inactive' ? '#25BD6F' : 'rgba(0, 0, 0, 0.04)',
+                borderColor: filterStatus === 'Inactive' ? '#25BD6F' : '#eefff3ff'
               }
             }}
           >
@@ -238,13 +216,13 @@ export default function EmployeeRequests() {
             startIcon={<IoAddCircleOutline />}
             onClick={handleOpenAddModal}
             sx={{
-              borderRadius: '20px',
-              backgroundColor: '#20bf6c',
+              borderRadius: '8px',
+              backgroundColor: '#0d4829',
               color: 'white',
               px: 3,
               py: 1,
               '&:hover': {
-                backgroundColor: '#0d4829'
+                backgroundColor: '#25BD6F'
               }
             }}
           >
@@ -282,39 +260,16 @@ export default function EmployeeRequests() {
                         <Switch
                           checked={row.blockStatus === 'Active'}
                           onChange={() => handleToggleBlockStatus(page * rowsPerPage + index)}
-                          size="small"
+                          color="success"
                           sx={{
                             '& .MuiSwitch-switchBase.Mui-checked': {
-                              color: '#20bf6c'
+                              color: '#278b56ff'
                             },
                             '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-                              backgroundColor: '#20bf6c'
+                              backgroundColor: '#278b56ff'
                             }
                           }}
                         />
-                        <Typography variant="body2" sx={{ fontSize: '12px', fontWeight: 500 }}>
-                          {row.blockStatus}
-                        </Typography>
-                      </Box>
-                    </TableCell>
-                    <TableCell>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Switch
-                          checked={row.accountStatus === 'Yes'}
-                          onChange={() => handleToggleAccountStatus(page * rowsPerPage + index)}
-                          size="small"
-                          sx={{
-                            '& .MuiSwitch-switchBase.Mui-checked': {
-                              color: '#20bf6c'
-                            },
-                            '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
-                              backgroundColor: '#20bf6c'
-                            }
-                          }}
-                        />
-                        <Typography variant="body2" sx={{ fontSize: '12px', fontWeight: 500 }}>
-                          {row.accountStatus}
-                        </Typography>
                       </Box>
                     </TableCell>
                     <TableCell>
@@ -324,15 +279,15 @@ export default function EmployeeRequests() {
                         startIcon={<FaRegEdit />}
                         onClick={() => handleOpenEditModal(row)}
                         sx={{
-                          color: '#20bf6c',
-                          borderColor: '#20bf6c',
+                          color: '#0D4829',
+                          borderColor: '#0D4829',
                           borderRadius: '4px',
                           padding: '4px 12px',
                           fontSize: '12px',
                           textTransform: 'none',
                           '&:hover': {
-                            borderColor: '#20bf6c',
-                            backgroundColor: 'rgba(32, 191, 108, 0.04)'
+                            borderColor: '#0D4829',
+                            backgroundColor: 'rgba(245, 124, 0, 0.04)'
                           }
                         }}
                       >
@@ -360,7 +315,7 @@ export default function EmployeeRequests() {
             justifyContent: 'space-between',
             alignItems: 'center',
             p: 1.5,
-            backgroundColor: '#e5fff1ff',
+            backgroundColor: '#eefff3ff',
             borderBottomLeftRadius: '8px',
             borderBottomRightRadius: '8px'
           }}

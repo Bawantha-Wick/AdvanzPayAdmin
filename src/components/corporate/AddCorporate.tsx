@@ -308,7 +308,7 @@ const AddCorporate: React.FC<AddCorporateProps> = ({ open, onClose, onSave, mode
         <DialogTitle sx={{ p: 0, mb: 3 }}>
           <Box display="flex" justifyContent="space-between" alignItems="center">
             <Typography variant="h6" fontWeight="medium">
-              {mode === 'add' ? 'Add New Corporate' : 'Edit Corporate'}
+              {mode === 'add' ? 'Add New Corporation' : 'Edit Corporation'}
             </Typography>
             <IconButton onClick={onClose} size="small">
               <CloseIcon />
