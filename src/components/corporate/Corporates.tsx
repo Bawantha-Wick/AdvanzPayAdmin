@@ -214,7 +214,7 @@ export default function Corporates() {
               }
             }}
           >
-            Add New Corporate
+            Add New Corporation
           </Button>
         </Box>
       </Box>
