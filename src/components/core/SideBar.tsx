@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { MdKeyboardArrowDown, MdKeyboardArrowRight, MdCorporateFare, MdBusiness, MdPeople } from 'react-icons/md';
-import { FaRegUser } from 'react-icons/fa';
+import { MdKeyboardArrowDown, MdKeyboardArrowRight, MdCorporateFare, MdPeople } from 'react-icons/md';
+import { FaRegUser, FaBuilding } from 'react-icons/fa';
 import { IoHomeOutline, IoClose } from 'react-icons/io5';
 import { RiFileListLine } from 'react-icons/ri';
 import { BiLogOut } from 'react-icons/bi';
@@ -92,7 +92,7 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
         <div style={menuItemStyles}>
           <button onClick={() => toggleMenu('employeeManagement')} className="w-full flex items-center justify-between text-white hover:bg-[#0B4728] transition-colors">
             <div className="flex items-center">
-              <MdCorporateFare className="text-xl" style={iconStyles} />
+              <FaBuilding className="text-xl" style={iconStyles} />
               <span className={isActiveRoute('/app/corporates') || isActiveRoute('/app/employee-requests') ? 'font-bold' : ''}>Corporate Management</span>
             </div>
             {expandedMenus.includes('employeeManagement') ? <MdKeyboardArrowDown className="text-xl" style={expandIconStyles} /> : <MdKeyboardArrowRight className="text-xl" style={expandIconStyles} />}
@@ -100,7 +100,7 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
           {expandedMenus.includes('employeeManagement') && (
             <div className="bg-[#0B4728]" style={subMenuStyles}>
               <Link to="/app/corporates" className="flex block py-2">
-                <MdBusiness className="text-xl" style={subMenuIconStyles} />
+                <MdCorporateFare className="text-xl" style={subMenuIconStyles} />
                 <span style={subMenuItemStyles} className={isActiveRoute('/app/corporates') ? 'font-bold' : ''}>
                   Corporates
                 </span>
