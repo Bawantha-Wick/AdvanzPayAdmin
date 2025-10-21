@@ -6,7 +6,7 @@ import { IoHomeOutline, IoClose } from 'react-icons/io5';
 import { RiFileListLine } from 'react-icons/ri';
 import { BiLogOut } from 'react-icons/bi';
 import { IoSettingsOutline } from 'react-icons/io5';
-import innerLogo from '../../assets/inner_logo.png';
+import innerLogo from '../../assets/inner_logo_rev.png';
 import { useAuthContext } from '../../contexts/useAuthContext';
 import ProfileIcon from '../common/ProfileIcon';
 
@@ -74,9 +74,13 @@ const SideBar: React.FC<SideBarProps> = ({ onClose }) => {
         <IoClose size={24} />
       </button>
 
-      <div className="flex justify-center items-center flex-shrink-0 bg-white/95 rounded-lg shadow-md" style={{ marginLeft: '2rem', marginRight: '2rem', marginTop: '0.25rem', padding: '1rem' }}>
-        <img src={innerLogo} alt="AdvanzPay" className="h-12 w-auto object-contain" />
+      <div className="flex justify-center items-center rounded-lg" style={{ marginLeft: '2rem', marginRight: '2rem', marginTop: '0.05rem', padding: '1rem' }}>
+        <img src={innerLogo} alt="AdvanzPay" className="h-16 w-auto object-contain" />
       </div>
+
+      {/* <div className="flex justify-center items-center flex-shrink-0 bg-white/95 rounded-lg shadow-md" style={{ marginLeft: '2rem', marginRight: '2rem', marginTop: '0.25rem', padding: '1rem' }}>
+        <img src={innerLogo} alt="AdvanzPay" className="h-12 w-auto object-contain" />
+      </div> */}
 
       {/* Navigation */}
       <nav className="flex-1" style={{ marginTop: '4rem', marginLeft: '3rem' }}>
