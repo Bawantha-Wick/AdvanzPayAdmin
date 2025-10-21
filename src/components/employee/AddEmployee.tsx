@@ -769,7 +769,7 @@ const AddEmployee: React.FC<AddEmployeeProps> = ({ open, onClose, onSave, mode =
                       }
                       label={
                         <Typography variant="subtitle2" color="#666" fontWeight="medium">
-                          Enable Auto-Approval for Requests
+                          Enable Auto-Approval For Requests
                         </Typography>
                       }
                     />
